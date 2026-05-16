@@ -1,3 +1,9 @@
+// イベント名省略: 前7文字 + … + 後5文字
+function abbr(name){
+  if(name.length <= 13) return name;
+  return name.slice(0,7) + '…' + name.slice(-5);
+}
+
 // ══════════════════════════════════════════════
 // カレンダーモーダル
 // ══════════════════════════════════════════════
@@ -8,6 +14,7 @@ function openCalendarModal(){
   calYear  = now.getFullYear();
   calMonth = now.getMonth();
   openModal(buildCalendarModal());
+  document.getElementById('modal-box').classList.add('cal-modal');
 }
 
 function buildCalendarModal(){
@@ -53,12 +60,12 @@ function buildCalendarModal(){
       const isReg = S.tournaments.some(t=>t.officialId===e.id);
       evHTML += `<span class="cal-event ${isReg?'registered':'official'}"
         onclick="event.stopPropagation();selectOfficialEvent('${e.id}')"
-        title="${e.name}">${e.name}</span>`;
+        title="${e.name}">${abbr(e.name)}</span>`;
     });
     regTs.filter(t=>!t.officialId).forEach(t=>{
       evHTML += `<span class="cal-event registered"
         onclick="event.stopPropagation();goRecord(${t.id});closeModal()"
-        title="${t.name}">${t.name}</span>`;
+        title="${t.name}">${abbr(t.name)}</span>`;
     });
 
     cal += `<div class="cal-day${isToday?' today':''}" onclick="selectDate('${dateStr}')">
@@ -91,7 +98,9 @@ function calNav(dir){
   calMonth += dir;
   if(calMonth<0){ calMonth=11; calYear--; }
   if(calMonth>11){ calMonth=0; calYear++; }
-  document.getElementById('modal-box').innerHTML = buildCalendarModal();
+  const box = document.getElementById('modal-box');
+  box.innerHTML = buildCalendarModal();
+  box.classList.add('cal-modal');
 }
 
 function selectDate(dateStr){

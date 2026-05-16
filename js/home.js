@@ -16,13 +16,23 @@ function renderHome(){
   }
   const now = new Date();
   const thisMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  const twoWeeksAgo = new Date(now);
+  twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+  const twoWeeksAgoStr = twoWeeksAgo.toISOString().slice(0,10);
 
   let list = [...S.tournaments];
   if(homeTab==='current'){
-    list = list.filter(t=>t.date.slice(0,7) >= thisMonth).sort((a,b)=>a.date.localeCompare(b.date));
+    // 今月以降 OR 今日から14日以内の過去日
+    list = list
+      .filter(t => t.date.slice(0,7) >= thisMonth || t.date >= twoWeeksAgoStr)
+      .sort((a,b) => a.date.localeCompare(b.date));
   } else {
-    list = list.filter(t=>t.date.slice(0,7) < thisMonth).sort((a,b)=>b.date.localeCompare(a.date));
+    // 14日より前の過去のみ
+    list = list
+      .filter(t => t.date < twoWeeksAgoStr)
+      .sort((a,b) => b.date.localeCompare(a.date));
   }
+
   if(!list.length){
     el.innerHTML=`<div class="empty">${homeTab==='current'?'当月・直近の大会はありません':'過去の大会はありません'}</div>`;
     return;
