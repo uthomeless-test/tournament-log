@@ -33,7 +33,9 @@
   </div>
   <div class="home-tabs">
     <button class="home-tab active" onclick="switchHomeTab('current', this)">当月・直近</button>
-    <button class="home-tab" onclick="switchHomeTab('past', this)">過去</button>
+    <button class="home-tab" onclick="switchHomeTab('past', this)">過去の記録</button>
+    <button class="home-tab" onclick="switchHomeTab('upcoming', this)">今後の大会</button>
+    <button class="home-tab" onclick="switchHomeTab('pastall', this)">過去の大会</button>
   </div>
   <div id="home-content"></div>
 </div>
@@ -157,7 +159,7 @@
   });
   loadState();
   if(currentTId===null) currentTId = getLatestTId();
-  loadOfficialSchedule().then(()=>{ renderHome(); });
+  loadOfficialSchedule().then(()=>{ renderHome(); }).catch(()=>{ renderHome(); });
 </script>
 </body>
 </html>
