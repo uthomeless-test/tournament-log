@@ -11,9 +11,18 @@
   {
     "id": "ocs-feb-day2",
     "group": "OCS 2026 February",
-    "name": "OCS 2026 February Day2・決勝",
+    "name": "OCS 2026 February Day2",
     "dates": ["2026-02-15"],
     "phase": "day2",
+    "type": "official",
+    "location": "オンライン"
+  },
+  {
+    "id": "ocs-feb-playoff",
+    "group": "OCS 2026 February",
+    "name": "OCS 2026 February プレーオフ",
+    "dates": ["2026-02-15"],
+    "phase": "playoff",
     "type": "official",
     "location": "オンライン"
   },
@@ -36,24 +45,6 @@
     "location": "都内スタジオ"
   },
   {
-    "id": "ocs-may-day1",
-    "group": "OCS 2026 May",
-    "name": "OCS 2026 May Day1",
-    "dates": ["2026-05-16", "2026-05-17"],
-    "phase": "day1",
-    "type": "official",
-    "location": "オンライン"
-  },
-  {
-    "id": "ocs-may-day2",
-    "group": "OCS 2026 May",
-    "name": "OCS 2026 May Day2・決勝",
-    "dates": ["2026-05-24"],
-    "phase": "day2",
-    "type": "official",
-    "location": "オンライン"
-  },
-  {
     "id": "ecs-osaka",
     "group": "ECS 2026 大阪大会",
     "name": "ECS 2026 大阪大会 予選",
@@ -70,6 +61,33 @@
     "phase": "playoff",
     "type": "official",
     "location": "グランキューブ大阪"
+  },
+  {
+    "id": "ocs-may-day1",
+    "group": "OCS 2026 May",
+    "name": "OCS 2026 May Day1",
+    "dates": ["2026-05-16", "2026-05-17"],
+    "phase": "day1",
+    "type": "official",
+    "location": "オンライン"
+  },
+  {
+    "id": "ocs-may-day2",
+    "group": "OCS 2026 May",
+    "name": "OCS 2026 May Day2",
+    "dates": ["2026-05-24"],
+    "phase": "day2",
+    "type": "official",
+    "location": "オンライン"
+  },
+  {
+    "id": "ocs-may-playoff",
+    "group": "OCS 2026 May",
+    "name": "OCS 2026 May プレーオフ",
+    "dates": ["2026-05-24"],
+    "phase": "playoff",
+    "type": "official",
+    "location": "オンライン"
   },
   {
     "id": "rage-s2-qual",
@@ -155,9 +173,18 @@
   {
     "id": "ocs-nov-day2",
     "group": "OCS 2026 November",
-    "name": "OCS 2026 November Day2・決勝",
+    "name": "OCS 2026 November Day2",
     "dates": ["2026-11-15"],
     "phase": "day2",
+    "type": "official",
+    "location": "オンライン"
+  },
+  {
+    "id": "ocs-nov-playoff",
+    "group": "OCS 2026 November",
+    "name": "OCS 2026 November プレーオフ",
+    "dates": ["2026-11-15"],
+    "phase": "playoff",
     "type": "official",
     "location": "オンライン"
   },
