@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SV MatchLog</title>
+  <title>SV Tournament Log</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -111,14 +111,6 @@
     .mfg input, .mfg select, .mfg textarea { width: 100%; }
     .mdivider { border: none; border-top: 0.5px solid var(--border); margin: 12px 0; }
 
-    /* ── ホーム：大会カード ── */
-    .tourn-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--r-lg); padding: 1rem 1.25rem; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; cursor: pointer; transition: background 0.1s; }
-    .tourn-card:hover { background: var(--bg2); }
-    .tourn-card-info { flex: 1; min-width: 0; }
-    .tourn-card-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .tourn-card-meta { font-size: 12px; color: var(--text2); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .tourn-card-actions { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
-
     /* ── ホーム：月グループ ── */
     .month-group { margin-bottom: 1.5rem; }
     .month-label { font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 0.5px solid var(--border); }
@@ -130,24 +122,29 @@
     .home-tab:hover:not(.active) { color: var(--text); }
 
     /* ── カレンダー ── */
-    .calendar-wrap { background: var(--bg2); border: 0.5px solid var(--border); border-radius: var(--r-lg); padding: 1rem; margin-bottom: 1rem; }
-    .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-    .cal-month-label { font-size: 15px; font-weight: 600; }
-    .cal-nav { background: none; border: none; color: var(--text2); font-size: 16px; padding: 4px 8px; border-radius: 4px; cursor: pointer; }
-    .cal-nav:hover { background: var(--bg3); }
-    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
-    .cal-dow { font-size: 11px; color: var(--text3); text-align: center; padding: 4px 0; font-weight: 500; }
-    .cal-day { min-height: 56px; border-radius: 6px; padding: 4px; background: var(--bg); border: 0.5px solid transparent; font-size: 12px; transition: background 0.1s; }
-    .cal-day.other-month { background: transparent; border-color: transparent; }
+    .calendar-wrap { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin-bottom: 10px; }
+    .cal-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px 8px; border-bottom: 0.5px solid var(--border); }
+    .cal-month-label { font-size: 14px; font-weight: 600; }
+    .cal-nav { background: none; border: 0.5px solid var(--border2); color: var(--text2); font-size: 14px; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .cal-nav:hover { background: var(--bg2); }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+    .cal-dow { font-size: 10px; color: var(--text3); text-align: center; padding: 6px 0 4px; font-weight: 600; border-bottom: 0.5px solid var(--border); background: var(--bg2); }
+    .cal-dow:first-child { color: #c0392b; }
+    .cal-dow:last-child { color: var(--blue); }
+    .cal-day { min-height: 60px; padding: 4px 3px; background: var(--bg); border-right: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border); font-size: 11px; cursor: pointer; transition: background 0.1s; vertical-align: top; }
+    .cal-day:nth-child(7n) { border-right: none; }
+    .cal-day:hover { background: var(--bg2); }
+    .cal-day.other-month { background: var(--bg2); }
     .cal-day.other-month .cal-day-num { color: var(--text3); }
-    .cal-day.today { border-color: var(--blue-border); }
-    .cal-day.today .cal-day-num { color: var(--blue); font-weight: 700; }
-    .cal-day-num { font-size: 12px; color: var(--text2); margin-bottom: 2px; }
-    .cal-event { font-size: 9.5px; line-height: 1.2; padding: 1px 4px; border-radius: 3px; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; font-weight: 500; }
-    .cal-event.official { background: var(--gold-light); color: var(--gold); }
-    .cal-event.official:hover { background: #f0e0b0; }
-    .cal-event.registered { background: var(--blue-light); color: var(--blue); }
-    .cal-event.registered:hover { background: #c0d8f0; }
+    .cal-day.today .cal-day-num { background: var(--blue); color: #fff; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+    .cal-day-num { font-size: 11px; font-weight: 500; color: var(--text2); margin-bottom: 2px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+    .cal-day-num.sun { color: #c0392b; }
+    .cal-day-num.sat { color: var(--blue); }
+    .cal-event { font-size: 9px; line-height: 1.3; padding: 1px 4px; border-radius: 3px; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; font-weight: 500; display: block; }
+    .cal-event.official { background: var(--gold-light); color: #9a7020; border-left: 2px solid var(--gold); }
+    .cal-event.official:hover { background: #f5e8c0; }
+    .cal-event.registered { background: var(--blue-light); color: var(--blue); border-left: 2px solid var(--blue-border); }
+    .cal-event.registered:hover { background: #cce0f5; }
 
     /* ── 記録画面：ブレッドクラム ── */
     .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text2); margin-bottom: 1rem; }
@@ -173,7 +170,7 @@
 
 <header class="app-header">
   <div class="app-header-inner">
-    <span class="app-logo" onclick="showPage('home')">SV MatchLog</span>
+    <span class="app-logo" onclick="showPage('home')">SV Tournament Log</span>
     <nav class="nav-tabs">
       <button class="nav-tab active" data-page="home">ホーム</button>
       <button class="nav-tab" data-page="record">記録</button>
@@ -199,8 +196,7 @@
     <button class="home-tab active" onclick="switchHomeTab('current', this)">当月・直近</button>
     <button class="home-tab" onclick="switchHomeTab('past', this)">過去</button>
   </div>
-  <div id="home-content"></div>
-</div>
+  <div id="home-content"></div></div>
 
 <!-- 記録 -->
 <div id="page-record" class="page">
@@ -407,14 +403,13 @@ function renderHome(){
   }
   const now = new Date();
   const thisMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-  // 当月・直近：当月 or 未来
-  // 過去：今月より前
+
   let list = [...S.tournaments].sort((a,b)=>b.date.localeCompare(a.date));
   if(homeTab==='current'){
-    list = list.filter(t => t.date >= thisMonth.slice(0,7));
-    list = list.sort((a,b)=>a.date.localeCompare(b.date)); // 昇順（近い順）
+    // 当月・直近：当月以降（未来も含む）を昇順
+    list = list.filter(t => t.date.slice(0,7) >= thisMonth).sort((a,b)=>a.date.localeCompare(b.date));
   } else {
-    list = list.filter(t => t.date < thisMonth);
+    list = list.filter(t => t.date.slice(0,7) < thisMonth);
   }
   if(!list.length){ el.innerHTML=`<div class="empty">${homeTab==='current'?'当月・直近の大会はありません':'過去の大会はありません'}</div>`; return; }
 
@@ -435,18 +430,22 @@ function renderHome(){
       const wins = recs.filter(r=>r.result==='win').length;
       const d1 = getDeck(t.deckId1); const d2 = getDeck(t.deckId2);
       const deckStr = [d1,d2].filter(Boolean).map(d=>`<span class="badge b-deck" style="display:inline-flex;align-items:center;gap:3px">${clsIcon(d.className,11)}${d.name}</span>`).join(' ');
-      h += `<div class="tourn-card" onclick="goRecord(${t.id})">
-        <div class="tourn-card-info">
-          <div class="tourn-card-name">${t.name}</div>
-          <div class="tourn-card-meta">
-            <span style="color:var(--text3)">${t.date}</span>
+      const recordStr = recs.length ? `${wl(wins,recs.length-wins)} (${pct(wins,recs.length)})` : '';
+      h += `<div class="card" style="margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap">
+            <span style="font-size:14px;font-weight:500">${t.name}</span>
             <span class="badge ${PHASE_CLS[t.phase]||''}">${PHASE_LABEL[t.phase]||t.phase}</span>
             <span class="badge ${t.type==='official'?'b-official':'b-custom'}">${t.type==='official'?'公式':'カスタム'}</span>
+          </div>
+          <div style="font-size:12px;color:var(--text2);display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <span>${t.date}</span>
             ${deckStr}
-            ${recs.length?`<span style="font-size:12px">${wl(wins,recs.length-wins)} (${pct(wins,recs.length)})</span>`:'<span style="font-size:12px;color:var(--text3)">未記録</span>'}
+            ${recordStr?`<span style="font-weight:500">${recordStr}</span>`:`<span style="color:var(--text3)">未記録</span>`}
           </div>
         </div>
-        <div class="tourn-card-actions" onclick="event.stopPropagation()">
+        <div class="home-card-actions" onclick="event.stopPropagation()">
+          <button class="btn btn-sm btn-primary" onclick="goRecord(${t.id})">結果を登録</button>
           <button class="btn btn-sm" onclick="goRecord(${t.id})">記録を見る</button>
           <button class="icon-btn" onclick="openEditTournament(${t.id})" title="編集">✎</button>
           <button class="icon-btn danger" onclick="deleteTournament(${t.id})" title="削除">✕</button>
@@ -471,17 +470,14 @@ function openCalendarModal(){
   openModal(buildCalendarModal());
 }
 function buildCalendarModal(){
-  // カレンダーHTML
   const firstDay = new Date(calYear, calMonth, 1).getDay();
   const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
   const today = new Date();
   const todayStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
 
-  // この月の公式イベント
   const monthStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}`;
   const monthEvents = officialSchedule.filter(e=>e.dates.some(d=>d.startsWith(monthStr)));
 
-  // 日付→イベントマップ
   const dateEventMap = {};
   monthEvents.forEach(e=>{
     e.dates.forEach(d=>{
@@ -490,7 +486,6 @@ function buildCalendarModal(){
     });
   });
 
-  // 登録済みの大会の日付マップ
   const registeredDates = {};
   S.tournaments.forEach(t=>{
     if(!registeredDates[t.date]) registeredDates[t.date]=[];
@@ -498,38 +493,48 @@ function buildCalendarModal(){
   });
 
   const dows = ['日','月','火','水','木','金','土'];
-  let cal = `<div class="cal-grid">${dows.map(d=>`<div class="cal-dow">${d}</div>`).join('')}`;
+  let cal = `<div class="cal-grid">`;
+  cal += dows.map(d=>`<div class="cal-dow">${d}</div>`).join('');
 
-  // 前月の空白
-  for(let i=0;i<firstDay;i++) cal+=`<div class="cal-day other-month"></div>`;
+  // 前月空白
+  for(let i=0;i<firstDay;i++) cal+=`<div class="cal-day other-month"><div class="cal-day-num"></div></div>`;
 
   for(let d=1;d<=daysInMonth;d++){
+    const dow = (firstDay + d - 1) % 7; // 0=日,6=土
     const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const isToday = dateStr===todayStr;
     const events = dateEventMap[dateStr]||[];
-    const regTournaments = registeredDates[dateStr]||[];
+    const regTournaments = (registeredDates[dateStr]||[]);
+
+    const numCls = dow===0?'cal-day-num sun':dow===6?'cal-day-num sat':'cal-day-num';
 
     let evHTML = '';
     events.forEach(e=>{
       const isReg = S.tournaments.some(t=>t.officialId===e.id);
-      evHTML+=`<div class="cal-event ${isReg?'registered':'official'}" onclick="event.stopPropagation();selectOfficialEvent('${e.id}')" title="${e.name}">${e.name}</div>`;
+      evHTML+=`<span class="cal-event ${isReg?'registered':'official'}" onclick="event.stopPropagation();selectOfficialEvent('${e.id}')" title="${e.name}">${e.name}</span>`;
     });
     regTournaments.filter(t=>!t.officialId).forEach(t=>{
-      evHTML+=`<div class="cal-event registered" onclick="event.stopPropagation();goRecord(${t.id});closeModal()" title="${t.name}">${t.name}</div>`;
+      evHTML+=`<span class="cal-event registered" onclick="event.stopPropagation();goRecord(${t.id});closeModal()" title="${t.name}">${t.name}</span>`;
     });
 
     cal+=`<div class="cal-day${isToday?' today':''}" onclick="selectDate('${dateStr}')">
-      <div class="cal-day-num">${d}</div>
+      <div class="${isToday?'cal-day-num':numCls}">${d}</div>
       ${evHTML}
     </div>`;
   }
+
+  // 後月空白（6行になるよう埋める）
+  const totalCells = firstDay + daysInMonth;
+  const remainder = totalCells % 7;
+  if(remainder>0){ for(let i=remainder;i<7;i++) cal+=`<div class="cal-day other-month"><div class="cal-day-num"></div></div>`; }
+
   cal+='</div>';
 
   return `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
     <div class="modal-title" style="margin-bottom:0">大会を登録</div>
     <button class="btn btn-sm" onclick="closeModal()">✕</button>
   </div>
-  <div class="calendar-wrap" style="padding:10px">
+  <div class="calendar-wrap">
     <div class="cal-header">
       <button class="cal-nav" onclick="calNav(-1)">‹</button>
       <span class="cal-month-label">${calYear}年 ${calMonth+1}月</span>
@@ -537,7 +542,7 @@ function buildCalendarModal(){
     </div>
     ${cal}
   </div>
-  <div style="font-size:11px;color:var(--text3);margin-bottom:8px">日付または大会名をクリックして登録</div>`;
+  <div style="font-size:11px;color:var(--text3);margin-bottom:4px">日付または大会名をクリックして登録</div>`;
 }
 function calNav(dir){
   calMonth+=dir;
@@ -568,10 +573,8 @@ function selectOfficialEvent(eventId){
 // 新規大会登録モーダル
 // ══════════════════════════════════════════════
 function openNewTournamentModal(date, officialEvent){
-  const decksHTML = buildDeckSelectors(null, null);
   const name = officialEvent ? officialEvent.name : '';
   const phase = officialEvent ? officialEvent.phase : 'day1';
-  const type = officialEvent ? 'official' : 'custom';
   openModal(`<div class="modal-title">大会を登録</div>
     <div class="mfg"><label>大会名</label><input id="m-tname" type="text" value="${name}" placeholder="大会名を入力" /></div>
     <div class="mfg"><label>日付</label><input id="m-tdate" type="date" value="${date}" /></div>
@@ -583,52 +586,30 @@ function openNewTournamentModal(date, officialEvent){
       </select>
     </div>
     <hr class="mdivider">
-    <div style="font-size:12px;font-weight:500;margin-bottom:8px">参加デッキ（2枚）</div>
-    ${decksHTML}
-    <div style="margin-top:8px"><button class="btn btn-sm" onclick="addNewDeckInline()">＋ デッキを新規作成</button></div>
-    <div id="m-new-deck-form" style="display:none;margin-top:8px;background:var(--bg2);border-radius:var(--r-md);padding:10px">
-      <div class="mfg"><label>デッキ名</label><input id="m-nd-name" type="text" placeholder="例: エルフ" /></div>
-      <div class="mfg"><label>クラス</label><select id="m-nd-cls">${clsOpts()}</select></div>
-      <button class="btn btn-sm btn-primary" onclick="confirmNewDeckInline()">追加</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="mfg"><label>デッキ1 クラス</label><select id="m-dcls1">${clsOpts('エルフ')}</select></div>
+      <div class="mfg"><label>デッキ1 名前（省略可）</label><input id="m-dname1" type="text" /></div>
+      <div class="mfg"><label>デッキ2 クラス</label><select id="m-dcls2">${clsOpts('ロイヤル')}</select></div>
+      <div class="mfg"><label>デッキ2 名前（省略可）</label><input id="m-dname2" type="text" /></div>
     </div>
     <div class="modal-footer">
-      <button class="btn" onclick="${officialEvent?`openCalendarModal()`:''};closeModal()">キャンセル</button>
+      <button class="btn" onclick="closeModal()">キャンセル</button>
       <button class="btn btn-primary" onclick="saveTournament(${officialEvent?`'${officialEvent.id}'`:'null'})">作成して記録を開始</button>
     </div>`);
 }
 
-function buildDeckSelectors(deckId1, deckId2){
-  const opts = `<option value="">-- 選択 --</option>` + S.decks.map(d=>`<option value="${d.id}">${d.name}（${d.className}）</option>`).join('');
-  const sel1 = opts.replace(`value="${deckId1}"`,`value="${deckId1}" selected`);
-  const sel2 = opts.replace(`value="${deckId2}"`,`value="${deckId2}" selected`);
-  return `<div class="mfg"><label>デッキ1</label><select id="m-deck1">${sel1}</select></div>
-          <div class="mfg"><label>デッキ2</label><select id="m-deck2">${sel2}</select></div>`;
-}
-
-function addNewDeckInline(){ document.getElementById('m-new-deck-form').style.display='block'; }
-function confirmNewDeckInline(){
-  const name = document.getElementById('m-nd-name').value.trim();
-  const cls = document.getElementById('m-nd-cls').value;
-  if(!name) return alert('デッキ名を入力してください');
-  const newDeck = { id: S.nextDId++, name, className: cls };
-  S.decks.push(newDeck); save();
-  // セレクトに追加
-  ['m-deck1','m-deck2'].forEach(sid=>{
-    const sel = document.getElementById(sid);
-    const opt = document.createElement('option');
-    opt.value = newDeck.id; opt.textContent = `${newDeck.name}（${newDeck.className}）`;
-    sel.appendChild(opt);
-  });
-  document.getElementById('m-new-deck-form').style.display='none';
-  document.getElementById('m-nd-name').value='';
+function getOrCreateDeck(cls, name){
+  const finalName = name||cls;
+  const d = { id: S.nextDId++, className: cls, name: finalName };
+  S.decks.push(d); save(); return d.id;
 }
 
 function saveTournament(officialId){
   const name = document.getElementById('m-tname').value.trim();
   const date = document.getElementById('m-tdate').value;
   const phase = document.getElementById('m-tphase').value;
-  const deckId1 = Number(document.getElementById('m-deck1').value)||null;
-  const deckId2 = Number(document.getElementById('m-deck2').value)||null;
+  const deckId1 = getOrCreateDeck(document.getElementById('m-dcls1').value, document.getElementById('m-dname1').value.trim());
+  const deckId2 = getOrCreateDeck(document.getElementById('m-dcls2').value, document.getElementById('m-dname2').value.trim());
   if(!name) return alert('大会名を入力してください');
   if(!date) return alert('日付を入力してください');
   const t = {
@@ -651,7 +632,7 @@ function saveTournament(officialId){
 // ══════════════════════════════════════════════
 function openEditTournament(id){
   const t = getTournament(id); if(!t) return;
-  const decksHTML = buildDeckSelectors(t.deckId1, t.deckId2);
+  const d1=getDeck(t.deckId1); const d2=getDeck(t.deckId2);
   openModal(`<div class="modal-title">大会を編集</div>
     <div class="mfg"><label>大会名</label><input id="m-tname" type="text" value="${t.name}" /></div>
     <div class="mfg"><label>日付</label><input id="m-tdate" type="date" value="${t.date||''}" /></div>
@@ -663,31 +644,25 @@ function openEditTournament(id){
       </select>
     </div>
     <hr class="mdivider">
-    <div style="font-size:12px;font-weight:500;margin-bottom:8px">参加デッキ（2枚）</div>
-    ${decksHTML}
-    <div style="margin-top:8px"><button class="btn btn-sm" onclick="addNewDeckInline()">＋ デッキを新規作成</button></div>
-    <div id="m-new-deck-form" style="display:none;margin-top:8px;background:var(--bg2);border-radius:var(--r-md);padding:10px">
-      <div class="mfg"><label>デッキ名</label><input id="m-nd-name" type="text" placeholder="例: エルフ" /></div>
-      <div class="mfg"><label>クラス</label><select id="m-nd-cls">${clsOpts()}</select></div>
-      <button class="btn btn-sm btn-primary" onclick="confirmNewDeckInline()">追加</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="mfg"><label>デッキ1 クラス</label><select id="m-dcls1">${clsOpts(d1?.className||'エルフ')}</select></div>
+      <div class="mfg"><label>デッキ1 名前（省略可）</label><input id="m-dname1" type="text" value="${d1?.name===d1?.className?'':d1?.name||''}" /></div>
+      <div class="mfg"><label>デッキ2 クラス</label><select id="m-dcls2">${clsOpts(d2?.className||'ロイヤル')}</select></div>
+      <div class="mfg"><label>デッキ2 名前（省略可）</label><input id="m-dname2" type="text" value="${d2?.name===d2?.className?'':d2?.name||''}" /></div>
     </div>
     <div class="modal-footer">
       <button class="btn" onclick="closeModal()">キャンセル</button>
       <button class="btn btn-primary" onclick="saveEditTournament(${id})">保存</button>
     </div>`);
-  // 現在値をセット
-  setTimeout(()=>{
-    if(t.deckId1) document.getElementById('m-deck1').value = t.deckId1;
-    if(t.deckId2) document.getElementById('m-deck2').value = t.deckId2;
-  },0);
 }
 function saveEditTournament(id){
   const t = getTournament(id); if(!t) return;
   t.name = document.getElementById('m-tname').value.trim()||t.name;
   t.date = document.getElementById('m-tdate').value;
   t.phase = document.getElementById('m-tphase').value;
-  t.deckId1 = Number(document.getElementById('m-deck1').value)||null;
-  t.deckId2 = Number(document.getElementById('m-deck2').value)||null;
+  // デッキは新規作成して上書き
+  t.deckId1 = getOrCreateDeck(document.getElementById('m-dcls1').value, document.getElementById('m-dname1').value.trim());
+  t.deckId2 = getOrCreateDeck(document.getElementById('m-dcls2').value, document.getElementById('m-dname2').value.trim());
   save(); closeModal();
   renderHome();
   if(currentTId===id) renderRecord();
