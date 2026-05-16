@@ -27,17 +27,49 @@ function renderHome(){
   if(homeTab==='pastall')  renderPastAllTab(el, thisMonth);
 }
 
-// ── 当月・直近（ユーザー登録済みのみ） ──────────
+// ── 当月・直近（公式スケジュール＋登録済み） ────
 function renderCurrentTab(el, thisMonth, twoWeeksAgoStr){
-  const list = S.tournaments
-    .filter(t => t.date.slice(0,7) === thisMonth || t.date >= twoWeeksAgoStr)
-    .sort((a,b) => a.date.localeCompare(b.date));
+  // 公式スケジュールから当月 + 過去14日以内を抽出
+  const entries = officialSchedule
+    .filter(e => e.dates[0].slice(0,7) === thisMonth || e.dates[0] >= twoWeeksAgoStr)
+    .sort((a,b) => a.dates[0].localeCompare(b.dates[0]));
 
-  if(!list.length){
-    el.innerHTML = '<div class="empty">当月・直近の登録済み大会はありません<br><span style="font-size:12px;margin-top:8px;display:block">カレンダーから大会を登録してください</span></div>';
+  // カスタム大会（officialIdなし）も追加
+  const customList = S.tournaments
+    .filter(t => !t.officialId && (t.date.slice(0,7) === thisMonth || t.date >= twoWeeksAgoStr));
+
+  if(!entries.length && !customList.length){
+    el.innerHTML = '<div class="empty">当月・直近の大会はありません</div>';
     return;
   }
-  el.innerHTML = buildMonthGroups(list, t => buildRegisteredCard(t));
+
+  // 公式エントリーを行に変換（登録済みなら登録済みカード、未登録ならサジェスト）
+  const rows = [];
+  entries.forEach(e => {
+    const registered = S.tournaments.find(t => t.officialId === e.id);
+    rows.push({ date: e.dates[0], card: registered ? buildRegisteredCard(registered) : buildSuggestCard(e) });
+  });
+  customList.forEach(t => {
+    rows.push({ date: t.date, card: buildRegisteredCard(t) });
+  });
+  rows.sort((a,b) => a.date.localeCompare(b.date));
+
+  // 月グループ化
+  const byMonth = {};
+  rows.forEach(row => {
+    const m = row.date.slice(0,7);
+    if(!byMonth[m]) byMonth[m] = [];
+    byMonth[m].push(row.card);
+  });
+
+  let h = '';
+  Object.entries(byMonth).forEach(([m, cards]) => {
+    const [y, mo] = m.split('-');
+    h += `<div class="month-group"><div class="month-label">${y}年 ${parseInt(mo)}月</div>`;
+    cards.forEach(c => { h += c; });
+    h += '</div>';
+  });
+  el.innerHTML = h;
 }
 
 // ── 過去の記録（ユーザー登録済みのみ） ──────────
