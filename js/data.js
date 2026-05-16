@@ -26,8 +26,9 @@ function clsOpts(selected='エルフ'){
 // ══════════════════════════════════════════════
 // 状態管理
 // ══════════════════════════════════════════════
-let S = { tournaments: [], decks: [], nextTId: 1, nextDId: 1, nextRId: 1 };
+let S = { tournaments: [], decks: [], tags: [], nextTId: 1, nextDId: 1, nextRId: 1 };
 let currentTId = null;
+let currentAnalysisTId = null;
 let homeTab = 'current';
 let officialSchedule = [];
 

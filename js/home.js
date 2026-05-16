@@ -179,7 +179,7 @@ function buildRegisteredCard(t){
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap">
         <span style="font-size:14px;font-weight:500">${t.name}</span>
         <span class="badge ${PHASE_CLS[t.phase]||''}">${PHASE_LABEL[t.phase]||t.phase}</span>
-        <span class="badge ${t.type==='official'?'b-official':'b-custom'}">${t.type==='official'?'公式':'カスタム'}</span>
+        ${(t.tags||[]).map(tag=>`<span class="badge b-custom">${tag}</span>`).join('')}
       </div>
       <div style="font-size:12px;color:var(--text2);display:flex;gap:8px;flex-wrap:wrap;align-items:center">
         <span>${t.date}</span>
@@ -191,6 +191,7 @@ function buildRegisteredCard(t){
     </div>
     <div class="home-card-actions" onclick="event.stopPropagation()">
       <button class="btn btn-sm btn-primary" onclick="goRecord(${t.id})">記録を見る</button>
+      <button class="btn btn-sm" onclick="goAnalysis(${t.id})">分析</button>
       <button class="icon-btn" onclick="openEditTournament(${t.id})" title="編集">✎</button>
       <button class="icon-btn danger" onclick="deleteTournament(${t.id})" title="削除">✕</button>
     </div>
@@ -218,6 +219,7 @@ function buildSuggestCard(e){
 }
 
 function goRecord(id){ currentTId=id; showPage('record'); }
+function goAnalysis(id){ currentAnalysisTId=id; showPage('analysis'); }
 
 function deleteTournament(id){
   if(!confirm('この大会の記録を削除しますか？')) return;

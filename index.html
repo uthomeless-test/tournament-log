@@ -69,10 +69,27 @@
 <div id="page-analysis" class="page">
   <div class="page-header"><h1 class="page-title">分析</h1></div>
   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:1rem">
-    <label style="font-size:12px;color:var(--text2)">大会</label>
-    <select id="an-tournament" onchange="renderAnalysis()" style="height:30px;font-size:12px">
-      <option value="">すべて</option>
-    </select>
+    <div style="display:flex;flex-direction:column;gap:2px">
+      <label style="font-size:11px;color:var(--text2)">大会グループ</label>
+      <select id="an-group" onchange="renderAnalysis()" style="height:30px;font-size:12px;min-width:200px">
+        <option value="">すべての大会</option>
+      </select>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2px">
+      <label style="font-size:11px;color:var(--text2)">フェーズ</label>
+      <select id="an-phase" onchange="_runAnalysis()" style="height:30px;font-size:12px">
+        <option value="">すべてのフェーズ</option>
+        <option value="day1">Day1</option>
+        <option value="day2">Day2</option>
+        <option value="playoff">プレーオフ</option>
+      </select>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2px">
+      <label style="font-size:11px;color:var(--text2)">タグ</label>
+      <select id="an-tag" onchange="_runAnalysis()" style="height:30px;font-size:12px">
+        <option value="">すべてのタグ</option>
+      </select>
+    </div>
   </div>
   <div id="analysis-content"></div>
 </div>
@@ -84,24 +101,33 @@
   <div class="card sec">
     <div style="font-size:13px;font-weight:600;margin-bottom:10px">① 大会を登録する</div>
     <p style="font-size:13px;color:var(--text2);line-height:1.7">
-      ホーム画面の「＋ 新しい大会を登録」ボタンを押すと、カレンダーが表示されます。<br>
-      公式大会（RAGE・OCS・ECS・ICS・WCQ）はカレンダー上に自動表示されます。<br>
-      大会名をクリックすると名前・日付・フェーズが自動入力されます。その後、参加デッキ2枚を設定して「作成」してください。<br>
-      カスタム大会は日付をクリックして手動で入力できます。
+      ホーム画面の「＋ 新しい大会を登録」ボタンを押すとカレンダーが表示されます。<br>
+      公式大会（RAGE・OCS・ECS・ICS・WCQ）はカレンダー上に金色で自動表示されます。大会名をクリックすると名前・日付・フェーズが自動入力されます。<br>
+      <strong>日付をクリックすると、任意の大会を手動で登録できます。</strong>カスタム大会にも対応しています。<br>
+      登録時にタグを付けることができます。タグは「公式」「非公式」から選ぶか、独自のタグを追加できます。
     </p>
   </div>
 
   <div class="card sec">
-    <div style="font-size:13px;font-weight:600;margin-bottom:10px">② フェーズについて</div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px">② ホーム画面のタブについて</div>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7">
+      <strong>当月・直近</strong>：今月と過去2週間以内の公式スケジュールを表示します。未登録の大会は点線カードで表示され、「登録」ボタンから参加登録できます。<br>
+      <strong>過去の記録</strong>：2週間より前の自分の登録済み大会の記録一覧です。<br>
+      <strong>今後の公式大会</strong>：来月以降の公式スケジュールです。事前に確認して登録できます。<br>
+      <strong>過去の公式大会</strong>：過去の公式スケジュール全件です。
+    </p>
+  </div>
+
+  <div class="card sec">
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px">③ フェーズについて</div>
     <p style="font-size:13px;color:var(--text2);line-height:1.7">
       各大会には <strong>Day1</strong>・<strong>Day2</strong>・<strong>プレーオフ</strong> のフェーズがあります。<br>
-      Day2やプレーオフへの参加は、対応する日付の大会をカレンダーから別途登録してください。<br>
-      同じ大会名でグループ化されますが、記録は独立して管理されます。
+      Day2・プレーオフは、対応する日付の大会をカレンダーから別途登録してください。同じ大会グループ名にすることで分析でまとめて集計できます。
     </p>
   </div>
 
   <div class="card sec">
-    <div style="font-size:13px;font-weight:600;margin-bottom:10px">③ 試合を記録する</div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px">④ 試合を記録する</div>
     <p style="font-size:13px;color:var(--text2);line-height:1.7">
       記録画面のフォームから1試合ずつ入力します。<br>
       自分のデッキ・相手の持ち込み2デッキ・相手の選出・先後・勝敗を入力して「追加」または
@@ -111,15 +137,16 @@
   </div>
 
   <div class="card sec">
-    <div style="font-size:13px;font-weight:600;margin-bottom:10px">④ 大会を編集する</div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px">⑤ 分析する</div>
     <p style="font-size:13px;color:var(--text2);line-height:1.7">
-      記録画面右上の「✎ 大会を編集」から、大会名・日付・参加デッキ・フェーズをいつでも変更できます。<br>
-      ホーム画面の大会カード右端の編集ボタンからも同様に編集できます。
+      分析タブでは <strong>大会グループ</strong>・<strong>フェーズ</strong>・<strong>タグ</strong> の3軸で絞り込んで集計できます。<br>
+      ホーム画面の各大会カードの「分析」ボタンを押すと、その大会グループが自動選択された状態で分析画面に移動します。<br>
+      大会グループを「ECS 2026 大阪大会」にするとDay1・プレーオフをまとめて集計、フェーズで「Day1」を選ぶと絞り込み集計ができます。
     </p>
   </div>
 
   <div class="card sec">
-    <div style="font-size:13px;font-weight:600;margin-bottom:10px">⑤ シェア・保存する</div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px">⑥ シェア・保存する</div>
     <p style="font-size:13px;color:var(--text2);line-height:1.7">
       記録画面の「𝕏 ツイート」ボタンで戦績をXに投稿できます。<br>
       「📷 画像保存」ボタンで記録をPNG画像としてダウンロードできます。
@@ -127,7 +154,7 @@
   </div>
 
   <div class="card sec">
-    <div style="font-size:13px;font-weight:600;margin-bottom:10px">⑥ データのバックアップ</div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px">⑦ データのバックアップ</div>
     <p style="font-size:13px;color:var(--text2);line-height:1.7">
       データはブラウザのローカルストレージに保存されます。<br>
       ブラウザデータ消去や端末変更でデータが消えることがあるため、<strong>定期的にホーム画面の「エクスポート」でJSONファイルに書き出すことをおすすめします。</strong><br>

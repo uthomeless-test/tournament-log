@@ -2,16 +2,53 @@
 // 分析画面
 // ══════════════════════════════════════════════
 function renderAnalysis(){
-  const selEl  = document.getElementById('an-tournament');
-  const prevVal= selEl.value;
-  selEl.innerHTML = '<option value="">すべて</option>' +
-    S.tournaments.map(t=>`<option value="${t.id}"${String(t.id)===prevVal?' selected':''}>${t.name}</option>`).join('');
+  // ホームから飛んできた場合はそのidを選択
+  const groupSel  = document.getElementById('an-group');
+  const phaseSel  = document.getElementById('an-phase');
+  const tagSel    = document.getElementById('an-tag');
 
-  const tid  = selEl.value ? Number(selEl.value) : null;
-  let recs   = [];
+  // グループ一覧を構築
+  const groups = [...new Set(S.tournaments.map(t=>t.group||t.name))].sort();
+  const prevGroup = groupSel.value;
+  groupSel.innerHTML = '<option value="">すべての大会</option>' +
+    groups.map(g=>`<option value="${g}"${g===prevGroup?' selected':''}>${g}</option>`).join('');
+
+  // ホームの分析ボタンから来た場合
+  if(currentAnalysisTId !== null){
+    const t = getTournament(currentAnalysisTId);
+    if(t){
+      const g = t.group||t.name;
+      groupSel.value = g;
+    }
+    currentAnalysisTId = null;
+  }
+
+  // フェーズ選択肢
+  phaseSel.innerHTML = `<option value="">すべてのフェーズ</option>
+    <option value="day1">Day1</option>
+    <option value="day2">Day2</option>
+    <option value="playoff">プレーオフ</option>`;
+
+  // タグ選択肢
+  const allTags = [...new Set(S.tournaments.flatMap(t=>t.tags||[]))].filter(Boolean);
+  const prevTag = tagSel.value;
+  tagSel.innerHTML = '<option value="">すべてのタグ</option>' +
+    allTags.map(tag=>`<option value="${tag}"${tag===prevTag?' selected':''}>${tag}</option>`).join('');
+
+  _runAnalysis();
+}
+
+function _runAnalysis(){
+  const groupVal = document.getElementById('an-group').value;
+  const phaseVal = document.getElementById('an-phase').value;
+  const tagVal   = document.getElementById('an-tag').value;
+
+  let recs = [];
   S.tournaments.forEach(t=>{
-    if(tid && t.id!==tid) return;
-    (t.records||[]).forEach(r=>recs.push({...r, _tname:t.name, _tid:t.id}));
+    if(groupVal && (t.group||t.name) !== groupVal) return;
+    if(phaseVal && t.phase !== phaseVal) return;
+    if(tagVal && !(t.tags||[]).includes(tagVal)) return;
+    (t.records||[]).forEach(r=>recs.push({...r, _tname:t.name, _tid:t.id, _phase:t.phase}));
   });
 
   const el = document.getElementById('analysis-content');
@@ -51,7 +88,7 @@ function renderAnalysis(){
     r.result==='win' ? byCombo[key].w++ : byCombo[key].l++;
   });
 
-  // サマリーカード
+  // サマリー
   let h=`<div class="stat-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:1.5rem">
     <div class="stat-card"><div class="stat-label">総合</div><div class="stat-val">${wl(wins,total-wins)}</div><div class="stat-sub">${pct(wins,total)}</div></div>
     <div class="stat-card"><div class="stat-label">試合数</div><div class="stat-val">${total}</div></div>
