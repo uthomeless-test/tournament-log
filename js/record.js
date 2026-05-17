@@ -83,174 +83,157 @@ function addBO1(tid){
 }
 
 // ── BO3入力フォーム ───────────────────────────
+// 状態をJSオブジェクトで管理（DOMに依存しない）
+let bo3State = {
+  o1: 'エルフ', o2: 'ロイヤル',
+  games: [
+    { myDeckId: '', oppPick: '', turn: '', result: '' },
+    { myDeckId: '', oppPick: '', turn: '', result: '' },
+    { myDeckId: '', oppPick: '', turn: '', result: '' }
+  ]
+};
+
 function renderBO3Form(el, t){
+  // 状態リセット
+  const d1 = getDeck(t.deckId1); const d2 = getDeck(t.deckId2);
+  bo3State = {
+    o1: 'エルフ', o2: 'ロイヤル',
+    games: [
+      { myDeckId: String(t.deckId1||''), oppPick: '', turn: '', result: '' },
+      { myDeckId: '', oppPick: '', turn: '', result: '' },
+      { myDeckId: '', oppPick: '', turn: '', result: '' }
+    ]
+  };
   el.innerHTML=`<div id="bo3-form">
-    <div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:8px">
-      相手の持ち込みデッキ
-    </div>
     <div class="add-form" style="margin-bottom:8px">
-      <div class="fg"><label>相手D1</label><select id="b3-o1" onchange="updateBO3State()">${clsOpts('エルフ')}</select></div>
-      <div class="fg"><label>相手D2</label><select id="b3-o2" onchange="updateBO3State()">${clsOpts('ロイヤル')}</select></div>
+      <div class="fg"><label>相手D1</label><select id="b3-o1" onchange="bo3UpdateOpp()">${clsOpts('エルフ')}</select></div>
+      <div class="fg"><label>相手D2</label><select id="b3-o2" onchange="bo3UpdateOpp()">${clsOpts('ロイヤル')}</select></div>
     </div>
     <div id="bo3-games"></div>
     <button class="btn btn-primary" style="margin-top:8px" onclick="addBO3(${t.id})">セット記録を追加</button>
   </div>`;
-  renderBO3Games(t);
+  bo3RenderGames(t);
 }
 
-function renderBO3Games(t){
+function bo3UpdateOpp(){
+  bo3State.o1 = document.getElementById('b3-o1')?.value || bo3State.o1;
+  bo3State.o2 = document.getElementById('b3-o2')?.value || bo3State.o2;
+  // 相手の選出をリセット
+  bo3State.games.forEach(g=>{ g.oppPick=''; });
+  const t = getTournament(currentTId); if(t) bo3RenderGames(t);
+}
+
+function bo3SetField(gameIdx, field, value){
+  bo3State.games[gameIdx][field] = value;
+  const t = getTournament(currentTId); if(t) bo3RenderGames(t);
+}
+
+function bo3RenderGames(t){
   const el = document.getElementById('bo3-games'); if(!el) return;
   const d1 = getDeck(t.deckId1); const d2 = getDeck(t.deckId2);
-  const myOpts = [d1,d2].filter(Boolean)
-    .map(d=>`<option value="${d.id}">${d.name}</option>`).join('');
+  const myDeckOpts = [d1,d2].filter(Boolean);
+  const o1 = bo3State.o1; const o2 = bo3State.o2;
+  const dId1 = String(t.deckId1); const dId2 = String(t.deckId2);
 
-  // 現在の入力状態から勝利済みデッキを計算
-  const state = getBO3State(t);
+  // 自動確定ロジック（勝った側のデッキを次戦で固定）
+  const g0 = bo3State.games[0];
+  const g1 = bo3State.games[1];
 
-  let html = '';
-  for(let i=0;i<3;i++){
-    const game = state.games[i];
-    const locked = i===2 && !state.needGame3; // 3戦目は1-1でないとロック
-    const myVal = game.myDeckId || '';
-    const myFixed = game.myDeckFixed; // 勝利済みで自動確定
-    const oppVal = game.oppPick || '';
-    const oppFixed = game.oppPickFixed;
+  // 2戦目：1戦目の結果から自動確定
+  let g1MyFixed = null, g1OppFixed = null;
+  if(g0.result){
+    if(g0.result==='win' && g0.myDeckId){
+      g1MyFixed = [dId1,dId2].find(id=>id!==g0.myDeckId) || null;
+    }
+    if(g0.result==='lose' && g0.oppPick){
+      g1OppFixed = [o1,o2].find(c=>c!==g0.oppPick) || null;
+    }
+  }
+  if(g1MyFixed && bo3State.games[1].myDeckId !== g1MyFixed){
+    bo3State.games[1].myDeckId = g1MyFixed;
+  }
+  if(g1OppFixed && bo3State.games[1].oppPick !== g1OppFixed){
+    bo3State.games[1].oppPick = g1OppFixed;
+  }
+
+  // 3戦目：1-1の場合のみ表示・両デッキ自動確定
+  const myWins1 = g0.result==='win'?1:0;
+  const myWins2 = myWins1 + (g1.result==='win'?1:0);
+  const oppWins1 = g0.result==='lose'?1:0;
+  const oppWins2 = oppWins1 + (g1.result==='lose'?1:0);
+  const showGame3 = g0.result && g1.result && myWins2===1 && oppWins2===1;
+
+  if(showGame3){
+    const myWonId = g0.result==='win'?g0.myDeckId:g1.myDeckId;
+    const oppWonClass = g0.result==='lose'?g0.oppPick:g1.oppPick;
+    bo3State.games[2].myDeckId = [dId1,dId2].find(id=>id!==myWonId)||'';
+    bo3State.games[2].oppPick  = [o1,o2].find(c=>c!==oppWonClass)||'';
+  }
+
+  const makeGameRow = (i, label, myFixed, oppFixed, show) => {
+    if(!show) return '';
+    const g = bo3State.games[i];
 
     const mySelect = myFixed
-      ? `<span class="badge b-deck">${getDeck(Number(myFixed))?.name||'?'}</span><input type="hidden" id="b3-my-${i}" value="${myFixed}">`
-      : `<select id="b3-my-${i}" onchange="updateBO3State()">${myOpts}</select>`;
-
-    const oppPick = oppFixed
-      ? `<span class="badge b-opp">${oppFixed}</span><input type="hidden" id="b3-opp-${i}" value="${oppFixed}">`
-      : `<select id="b3-opp-${i}" onchange="updateBO3State()">
+      ? `<span class="badge b-deck">${getDeck(Number(myFixed))?.name||'?'}</span>`
+      : `<select onchange="bo3SetField(${i},'myDeckId',this.value)">
           <option value="">-</option>
-          ${[...new Set([
-            document.getElementById('b3-o1')?.value||'エルフ',
-            document.getElementById('b3-o2')?.value||'ロイヤル'
-          ])].map(c=>`<option value="${c}"${c===oppVal?' selected':''}>${c}</option>`).join('')}
+          ${myDeckOpts.map(d=>`<option value="${d.id}"${String(d.id)===g.myDeckId?' selected':''}>${d.name}</option>`).join('')}
         </select>`;
 
-    const disabledClass = locked ? 'style="opacity:0.4;pointer-events:none"' : '';
-    const gameLabel = ['第1戦','第2戦','第3戦'][i];
-    const lockedNote = locked ? '<span style="font-size:11px;color:var(--text3);margin-left:8px">1-1になると入力可能</span>' : '';
-
-    html += `<div class="add-form" style="margin-bottom:6px;flex-wrap:wrap" ${disabledClass}>
-      <div class="fg"><label>${gameLabel}${lockedNote}</label><div style="font-size:11px;color:var(--text2);padding:4px 0">${gameLabel}</div></div>
-      <div class="fg"><label>自分のデッキ</label>${mySelect}</div>
-      <div class="fg"><label>相手の選出</label>${oppPick}</div>
-      <div class="fg"><label>先後</label>
-        <select id="b3-turn-${i}">
+    const oppOpts = [...new Set([o1,o2])];
+    const oppSelect = oppFixed
+      ? `<span class="badge b-opp" style="display:inline-flex;align-items:center;gap:3px">${clsIcon(oppFixed,12)}${oppFixed}</span>`
+      : `<select onchange="bo3SetField(${i},'oppPick',this.value)">
           <option value="">-</option>
-          <option value="first"${game.turn==='first'?' selected':''}>先攻</option>
-          <option value="second"${game.turn==='second'?' selected':''}>後攻</option>
+          ${oppOpts.map(c=>`<option value="${c}"${c===g.oppPick?' selected':''}>${c}</option>`).join('')}
+        </select>`;
+
+    return `<div class="add-form" style="margin-bottom:6px;flex-wrap:wrap">
+      <div class="fg"><label>${label}</label><div style="font-size:11px;color:var(--text2);padding:2px 0">${label}</div></div>
+      <div class="fg"><label>自分のデッキ</label>${mySelect}</div>
+      <div class="fg"><label>相手の選出</label>${oppSelect}</div>
+      <div class="fg"><label>先後</label>
+        <select onchange="bo3SetField(${i},'turn',this.value)">
+          <option value=""${!g.turn?' selected':''}>-</option>
+          <option value="first"${g.turn==='first'?' selected':''}>先攻</option>
+          <option value="second"${g.turn==='second'?' selected':''}>後攻</option>
         </select>
       </div>
       <div class="fg"><label>結果</label>
-        <select id="b3-res-${i}" onchange="updateBO3State()">
-          <option value="win"${game.result==='win'?' selected':''}>勝</option>
-          <option value="lose"${game.result==='lose'?' selected':''}>負</option>
+        <select onchange="bo3SetField(${i},'result',this.value)">
+          <option value=""${!g.result?' selected':''}>-</option>
+          <option value="win"${g.result==='win'?' selected':''}>勝</option>
+          <option value="lose"${g.result==='lose'?' selected':''}>負</option>
         </select>
       </div>
     </div>`;
-  }
+  };
+
+  let html = '';
+  html += makeGameRow(0, '第1戦', null, null, true);
+  html += makeGameRow(1, '第2戦', g1MyFixed, g1OppFixed, !!g0.result);
+  html += makeGameRow(2, '第3戦', bo3State.games[2].myDeckId||null, bo3State.games[2].oppPick||null, showGame3);
   el.innerHTML = html;
-}
-
-// BO3の現在の入力状態を計算
-function getBO3State(t){
-  const state = { games: [{},{},{}], needGame3: false };
-  const myWonDeckIds = new Set(); // 自分が勝利済みのデッキid
-  const oppWonClasses = new Set(); // 相手が勝利済みのクラス
-
-  for(let i=0;i<3;i++){
-    const myEl = document.getElementById(`b3-my-${i}`);
-    const oppEl = document.getElementById(`b3-opp-${i}`);
-    const resEl = document.getElementById(`b3-res-${i}`);
-    const turnEl = document.getElementById(`b3-turn-${i}`);
-    const myVal = myEl?.value||'';
-    const oppVal = oppEl?.value||'';
-    const res = resEl?.value||'win';
-    const turn = turnEl?.value||'';
-
-    state.games[i] = { myDeckId: myVal, oppPick: oppVal, result: res, turn };
-
-    if(i < 2){
-      if(myVal && res==='win') myWonDeckIds.add(myVal);
-      if(oppVal && res==='lose') oppWonClasses.add(oppVal);
-    }
-  }
-
-  // 2戦終了後の状態計算
-  const game0res = document.getElementById('b3-res-0')?.value;
-  const game1res = document.getElementById('b3-res-1')?.value;
-  if(game0res && game1res){
-    const myWins = [game0res,game1res].filter(r=>r==='win').length;
-    const oppWins = [game0res,game1res].filter(r=>r==='lose').length;
-    state.needGame3 = myWins===1 && oppWins===1;
-  }
-
-  // 自分の次のデッキ自動確定（勝利済みでない方）
-  const d1 = String(t.deckId1); const d2 = String(t.deckId2);
-  const myRemaining = [d1,d2].find(id=>!myWonDeckIds.has(id));
-
-  // 相手の次のデッキ自動確定
-  const o1 = document.getElementById('b3-o1')?.value;
-  const o2 = document.getElementById('b3-o2')?.value;
-  const oppRemaining = [o1,o2].find(c=>!oppWonClasses.has(c));
-
-  // 2戦目のデッキ自動確定
-  const game0myRes = document.getElementById('b3-res-0')?.value;
-  const game0my = document.getElementById('b3-my-0')?.value;
-  const game0opp = document.getElementById('b3-opp-0')?.value;
-  if(game0myRes){
-    if(game0myRes==='win' && game0my){
-      // 自分が1戦目勝利→2戦目は残りのデッキ
-      const rem = [d1,d2].find(id=>id!==game0my);
-      if(rem){ state.games[1].myDeckFixed = rem; state.games[1].myDeckId = rem; }
-    }
-    if(game0myRes==='lose' && game0opp){
-      // 相手が1戦目勝利→相手2戦目は残りのクラス
-      const rem = [o1,o2].find(c=>c!==game0opp);
-      if(rem){ state.games[1].oppPickFixed = rem; state.games[1].oppPick = rem; }
-    }
-  }
-
-  // 3戦目は両方自動確定
-  if(state.needGame3){
-    if(myRemaining){ state.games[2].myDeckFixed = myRemaining; state.games[2].myDeckId = myRemaining; }
-    if(oppRemaining){ state.games[2].oppPickFixed = oppRemaining; state.games[2].oppPick = oppRemaining; }
-  }
-
-  return state;
-}
-
-function updateBO3State(){
-  const t = getTournament(currentTId); if(!t) return;
-  renderBO3Games(t);
 }
 
 function addBO3(tid){
   const t = getTournament(tid); if(!t) return;
-  const o1 = document.getElementById('b3-o1')?.value;
-  const o2 = document.getElementById('b3-o2')?.value;
-  if(!o1||!o2) return alert('相手の持ち込みデッキを選択してください');
+  const o1 = bo3State.o1; const o2 = bo3State.o2;
 
-  const state = getBO3State(t);
-  const games = [];
-  const needG3 = state.needGame3;
+  // 入力済みのゲームのみ取得
+  const games = bo3State.games.filter(g=>g.result);
+  if(games.length<2) return alert('少なくとも2戦分の結果を入力してください');
 
-  for(let i=0;i<(needG3?3:2);i++){
-    const myDeckId = Number(document.getElementById(`b3-my-${i}`)?.value)||null;
-    const oppPick = document.getElementById(`b3-opp-${i}`)?.value||'';
-    const turn = document.getElementById(`b3-turn-${i}`)?.value||'';
-    const result = document.getElementById(`b3-res-${i}`)?.value||'win';
-    games.push({ myDeckId, oppPick, turn, result });
-  }
+  // セット勝敗判定：自分が2種のデッキで各1勝
+  const myWonDecks  = new Set(games.filter(g=>g.result==='win').map(g=>g.myDeckId));
+  const oppWonClass = new Set(games.filter(g=>g.result==='lose').map(g=>g.oppPick));
+  const setResult = myWonDecks.size>=2?'win':oppWonClass.size>=2?'lose':'unknown';
 
-  // セット勝敗判定：自分が2デッキ両方で1勝ずつ
-  const myWonDecks = new Set(games.filter(g=>g.result==='win').map(g=>g.myDeckId));
-  const oppWonClasses = new Set(games.filter(g=>g.result==='lose').map(g=>g.oppPick));
-  const setResult = myWonDecks.size>=2 ? 'win' : oppWonClasses.size>=2 ? 'lose' : 'unknown';
+  // スコア計算
+  const myWins  = games.filter(g=>g.result==='win').length;
+  const oppWins = games.filter(g=>g.result==='lose').length;
+  const score   = `${myWins}-${oppWins}`;
 
   const r = {
     id: S.nextRId++,
@@ -258,6 +241,7 @@ function addBO3(tid){
     oppClass1: o1, oppClass2: o2,
     games,
     setResult,
+    score,
     memo: '', createdAt: Date.now()
   };
   t.records.push(r); save(); renderRecord();
@@ -422,7 +406,7 @@ function renderBO3Table(el, t){
         <span class="badge b-opp" style="display:inline-flex;align-items:center;gap:3px">${clsIcon(r.oppClass2,12)}${r.oppClass2}</span>
       </td>
       ${gameCell(games[0])}${gameCell(games[1])}${gameCell(games[2]||null)}
-      <td><span class="badge b-${setRes==='win'?'win':setRes==='lose'?'lose':'opp'}">${setRes==='win'?'勝':setRes==='lose'?'負':'?'}</span></td>
+      <td><span class="badge b-${setRes==='win'?'win':setRes==='lose'?'lose':'opp'}">${r.score||'?'} ${setRes==='win'?'勝':setRes==='lose'?'負':''}</span></td>
       <td class="memo-cell">${r.memo||''}</td>
       <td><button class="icon-btn danger" onclick="delRecord(${t.id},${r.id})">✕</button></td>
     </tr>`;
