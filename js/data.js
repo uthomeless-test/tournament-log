@@ -12,8 +12,8 @@ const CLASS_ICONS = {
 };
 
 const CLASSES     = ['エルフ','ロイヤル','ウィッチ','ドラゴン','ナイトメア','ビショップ','ネメシス'];
-const PHASE_LABEL = { day1: 'Day1', day2: 'Day2', playoff: 'プレーオフ', gf: 'GF' };
-const PHASE_CLS   = { day1: 'b-phase-day1', day2: 'b-phase-day2', playoff: 'b-phase-playoff', gf: 'b-phase-gf' };
+const PHASE_LABEL = { day1: 'Day1', day2: 'Day2', playoff: 'プレーオフ', gf: 'GF', none: '-' };
+const PHASE_CLS   = { day1: 'b-phase-day1', day2: 'b-phase-day2', playoff: 'b-phase-playoff', gf: 'b-phase-gf', none: 'b-phase-none' };
 const PRESET_TAGS = ['公式', '非公式'];
 
 function clsIcon(name, size=16){

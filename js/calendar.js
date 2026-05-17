@@ -110,9 +110,9 @@ function addCustomTag(){
 // ══════════════════════════════════════════════
 function openNewTournamentModal(date,officialEvent){
   const group=officialEvent?officialEvent.group:'';
-  const phase=officialEvent?officialEvent.phase:'day1';
+  const phase=officialEvent?officialEvent.phase:'none';
   const format=officialEvent?officialEvent.format:'bo1';
-  const defaultTags=officialEvent?['公式']:[];
+  const defaultTags=officialEvent?['公式']:['非公式'];
   openModal(buildTournamentForm({group,date,phase,format,tags:defaultTags,officialId:officialEvent?.id||null,isNew:true}));
 }
 
@@ -123,6 +123,7 @@ function buildTournamentForm({group,date,phase,format,tags,officialId,isNew,id,d
     <div class="mfg"><label>日付</label><input id="m-tdate" type="date" value="${date||''}" /></div>
     <div class="mfg"><label>フェーズ</label>
       <select id="m-tphase">
+        <option value="none"${phase==='none'?' selected':''}>-</option>
         <option value="day1"${phase==='day1'?' selected':''}>Day1</option>
         <option value="day2"${phase==='day2'?' selected':''}>Day2</option>
         <option value="playoff"${phase==='playoff'?' selected':''}>プレーオフ</option>
@@ -163,7 +164,7 @@ function saveTournament(officialId){
   const format=document.getElementById('m-tformat').value;
   if(!group) return alert('大会グループ名を入力してください');
   if(!date)  return alert('日付を入力してください');
-  const name=`${group} ${PHASE_LABEL[phase]}`;
+  const name=phase==='none'?group:`${group} ${PHASE_LABEL[phase]}`;
   const deckId1=getOrCreateDeck(document.getElementById('m-dcls1').value,document.getElementById('m-dname1').value.trim());
   const deckId2=getOrCreateDeck(document.getElementById('m-dcls2').value,document.getElementById('m-dname2').value.trim());
   const t={
@@ -191,7 +192,7 @@ function saveEditTournament(id){
   const group=document.getElementById('m-tgroup').value.trim()||t.group||t.name;
   const phase=document.getElementById('m-tphase').value;
   t.group=group;
-  t.name=`${group} ${PHASE_LABEL[phase]}`;
+  t.name=phase==='none'?group:`${group} ${PHASE_LABEL[phase]}`;
   t.date=document.getElementById('m-tdate').value;
   t.phase=phase;
   t.format=document.getElementById('m-tformat').value;
