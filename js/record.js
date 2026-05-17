@@ -394,11 +394,11 @@ function renderBO3Table(el, t){
     const games = r.games||[];
     const gameCell = (g)=>{
       if(!g) return '<td style="color:var(--text3)">-</td>';
-      const dk=getDeck(Number(g.myDeckId));
+      const myDk=getDeck(Number(g.myDeckId));
       const turnLabel=g.turn==='first'?'先':g.turn==='second'?'後':'-';
       return `<td style="font-size:12px">
         <div style="display:flex;flex-direction:column;gap:2px;align-items:center">
-          <span class="badge b-deck" style="font-size:10px">${dk?.name||'?'}</span>
+          <span style="display:inline-flex;align-items:center;gap:2px">${clsIcon(myDk?.className,11)}${myDk?.className||'-'}</span>
           <span style="display:inline-flex;align-items:center;gap:2px">${clsIcon(g.oppPick,11)}${g.oppPick}</span>
           <span>${turnLabel} <span class="badge b-${g.result}" style="font-size:10px">${g.result==='win'?'勝':'負'}</span></span>
         </div>
@@ -418,8 +418,106 @@ function renderBO3Table(el, t){
         <div><span class="badge b-${setRes==='win'?'win':setRes==='lose'?'lose':'opp'}" style="font-size:12px">${setRes==='win'?'○':setRes==='lose'?'×':'?'}</span></div>
       </td>
       <td class="memo-cell">${r.memo||''}</td>
-      <td><button class="icon-btn danger" onclick="delRecord(${t.id},${r.id})">✕</button></td>
+      <td style="white-space:nowrap">
+        <button class="icon-btn" onclick="openEditBO3Record(${t.id},${r.id})">✎</button>
+        <button class="icon-btn danger" onclick="delRecord(${t.id},${r.id})">✕</button>
+      </td>
     </tr>`;
   });
   h+='</tbody></table></div>'; el.innerHTML=h;
+}
+
+// ── BO3記録編集 ───────────────────────────────
+function openEditBO3Record(tid, rid){
+  const t = getTournament(tid);
+  const r = t?.records.find(x=>x.id===rid); if(!r) return;
+  const games = r.games||[];
+  const d1=getDeck(t.deckId1); const d2=getDeck(t.deckId2);
+  const myOpts = [d1,d2].filter(Boolean)
+    .map(d=>`<option value="${d.id}">${d.name}（${d.className}）</option>`).join('');
+  const oppOpts = [...new Set([r.oppClass1,r.oppClass2])]
+    .map(c=>`<option value="${c}">${c}</option>`).join('');
+
+  const gameForm = (i, label)=>{
+    const g = games[i]||{};
+    return `<div style="margin-bottom:10px;padding:8px;background:var(--bg2);border-radius:var(--r-md)">
+      <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:6px">${label}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px">
+        <div class="mfg"><label>自分</label>
+          <select id="eb3-my-${i}">
+            <option value="">-</option>${myOpts.replace(`value="${g.myDeckId}"`,`value="${g.myDeckId}" selected`)}
+          </select>
+        </div>
+        <div class="mfg"><label>相手の選出</label>
+          <select id="eb3-opp-${i}">
+            <option value="">-</option>${oppOpts.replace(`value="${g.oppPick}"`,`value="${g.oppPick}" selected`)}
+          </select>
+        </div>
+        <div class="mfg"><label>先後</label>
+          <select id="eb3-turn-${i}">
+            <option value=""${!g.turn?' selected':''}>-</option>
+            <option value="first"${g.turn==='first'?' selected':''}>先攻</option>
+            <option value="second"${g.turn==='second'?' selected':''}>後攻</option>
+          </select>
+        </div>
+        <div class="mfg"><label>結果</label>
+          <select id="eb3-res-${i}">
+            <option value=""${!g.result?' selected':''}>-</option>
+            <option value="win"${g.result==='win'?' selected':''}>勝</option>
+            <option value="lose"${g.result==='lose'?' selected':''}>負</option>
+          </select>
+        </div>
+      </div>
+    </div>`;
+  };
+
+  openModal(`<div class="modal-title">セット記録を編集</div>
+    <div class="mfg">
+      <label>相手の持ち込み</label>
+      <div style="display:flex;gap:6px">
+        <select id="eb3-o1" style="flex:1">${clsOpts(r.oppClass1)}</select>
+        <select id="eb3-o2" style="flex:1">${clsOpts(r.oppClass2)}</select>
+      </div>
+    </div>
+    <hr class="mdivider">
+    ${gameForm(0,'第1戦')}
+    ${gameForm(1,'第2戦')}
+    ${games[2]?gameForm(2,'第3戦'):''}
+    <div class="mfg"><label>メモ</label><textarea id="eb3-memo">${r.memo||''}</textarea></div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal()">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveEditBO3Record(${tid},${rid})">保存</button>
+    </div>`);
+}
+
+function saveEditBO3Record(tid, rid){
+  const t = getTournament(tid);
+  const r = t?.records.find(x=>x.id===rid); if(!r) return;
+
+  r.oppClass1 = document.getElementById('eb3-o1').value;
+  r.oppClass2 = document.getElementById('eb3-o2').value;
+  r.memo      = document.getElementById('eb3-memo').value;
+
+  const newGames = [];
+  for(let i=0; i<(r.games?.length||2); i++){
+    const res = document.getElementById(`eb3-res-${i}`)?.value||'';
+    if(!res) break;
+    newGames.push({
+      myDeckId: document.getElementById(`eb3-my-${i}`)?.value||'',
+      oppPick:  document.getElementById(`eb3-opp-${i}`)?.value||'',
+      turn:     document.getElementById(`eb3-turn-${i}`)?.value||'',
+      result:   res
+    });
+  }
+  r.games = newGames;
+
+  // セット勝敗・スコア再計算
+  const myWonDecks  = new Set(newGames.filter(g=>g.result==='win').map(g=>g.myDeckId));
+  const oppWonClass = new Set(newGames.filter(g=>g.result==='lose').map(g=>g.oppPick));
+  r.setResult = myWonDecks.size>=2?'win':oppWonClass.size>=2?'lose':'unknown';
+  const myW = newGames.filter(g=>g.result==='win').length;
+  const opW = newGames.filter(g=>g.result==='lose').length;
+  r.score = `${myW}-${opW}`;
+
+  save(); closeModal(); renderRecord();
 }
