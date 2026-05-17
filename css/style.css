@@ -52,6 +52,7 @@ textarea { resize: vertical; min-height: 52px; }
 .b-phase-day1    { background: var(--blue-light); color: #0C447C; font-size: 10px; padding: 2px 7px; }
 .b-phase-day2    { background: #EEE6FB; color: #5B2D9E; font-size: 10px; padding: 2px 7px; }
 .b-phase-playoff { background: var(--gold-light); color: var(--gold); font-size: 10px; padding: 2px 7px; }
+.b-phase-gf      { background: #2D1B6E; color: #C8B8FF; font-size: 10px; padding: 2px 7px; }
 
 /* ── カード・セクション ── */
 .card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--r-lg); padding: 1rem 1.25rem; }

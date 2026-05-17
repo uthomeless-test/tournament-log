@@ -34,32 +34,97 @@
     "location": "オンライン"
   },
   {
-    "id": "rage-s1-qual",
-    "group": "RAGE Japan Championship 2026 Season 1",
-    "name": "RAGE Season 1 予選",
+    "id": "ecs-miyagi-day1",
+    "group": "ECS 2026 宮城大会",
+    "name": "ECS 2026 宮城大会 Day1",
     "dates": [
-      "2026-04-11",
-      "2026-04-12"
+      "2026-02-23"
+    ],
+    "phase": "day1",
+    "type": "official",
+    "location": "仙台国際センター"
+  },
+  {
+    "id": "ecs-miyagi-playoff",
+    "group": "ECS 2026 宮城大会",
+    "name": "ECS 2026 宮城大会 プレーオフ",
+    "dates": [
+      "2026-02-23"
+    ],
+    "phase": "playoff",
+    "type": "official",
+    "location": "仙台国際センター"
+  },
+  {
+    "id": "ecs-aichi-day1",
+    "group": "ECS 2026 愛知大会",
+    "name": "ECS 2026 愛知大会 Day1",
+    "dates": [
+      "2026-03-15"
+    ],
+    "phase": "day1",
+    "type": "official",
+    "location": "Aichi Sky Expo"
+  },
+  {
+    "id": "ecs-aichi-playoff",
+    "group": "ECS 2026 愛知大会",
+    "name": "ECS 2026 愛知大会 プレーオフ",
+    "dates": [
+      "2026-03-15"
+    ],
+    "phase": "playoff",
+    "type": "official",
+    "location": "Aichi Sky Expo"
+  },
+  {
+    "id": "rage-s1-day1",
+    "group": "RAGE Japan Championship 2026 Season 1",
+    "name": "RAGE Season 1 Day1",
+    "dates": [
+      "2026-04-11"
     ],
     "phase": "day1",
     "type": "official",
     "location": "幕張メッセ"
   },
   {
-    "id": "rage-s1-finals",
+    "id": "rage-s1-day2",
+    "group": "RAGE Japan Championship 2026 Season 1",
+    "name": "RAGE Season 1 Day2",
+    "dates": [
+      "2026-04-12"
+    ],
+    "phase": "day2",
+    "type": "official",
+    "location": "幕張メッセ"
+  },
+  {
+    "id": "rage-s1-playoff",
+    "group": "RAGE Japan Championship 2026 Season 1",
+    "name": "RAGE Season 1 プレーオフ",
+    "dates": [
+      "2026-04-12"
+    ],
+    "phase": "playoff",
+    "type": "official",
+    "location": "幕張メッセ"
+  },
+  {
+    "id": "rage-s1-gf",
     "group": "RAGE Japan Championship 2026 Season 1",
     "name": "RAGE Season 1 Grand Finals",
     "dates": [
       "2026-04-26"
     ],
-    "phase": "playoff",
+    "phase": "gf",
     "type": "official",
     "location": "都内スタジオ"
   },
   {
-    "id": "ecs-osaka",
+    "id": "ecs-osaka-day1",
     "group": "ECS 2026 大阪大会",
-    "name": "ECS 2026 大阪大会 予選",
+    "name": "ECS 2026 大阪大会 Day1",
     "dates": [
       "2026-05-10"
     ],
@@ -68,7 +133,7 @@
     "location": "グランキューブ大阪"
   },
   {
-    "id": "ecs-osaka-po",
+    "id": "ecs-osaka-playoff",
     "group": "ECS 2026 大阪大会",
     "name": "ECS 2026 大阪大会 プレーオフ",
     "dates": [
@@ -113,32 +178,42 @@
     "location": "オンライン"
   },
   {
-    "id": "rage-s2-qual",
+    "id": "rage-s2-day1",
     "group": "RAGE Japan Championship 2026 Season 2",
-    "name": "RAGE Season 2 予選",
+    "name": "RAGE Season 2 Day1",
     "dates": [
-      "2026-07-19",
-      "2026-07-20"
+      "2026-07-19"
     ],
     "phase": "day1",
     "type": "official",
     "location": "インテックス大阪"
   },
   {
-    "id": "rage-s2-finals",
+    "id": "rage-s2-day2",
     "group": "RAGE Japan Championship 2026 Season 2",
-    "name": "RAGE Season 2 Grand Finals",
+    "name": "RAGE Season 2 Day2",
     "dates": [
-      "2026-08-23"
+      "2026-07-20"
+    ],
+    "phase": "day2",
+    "type": "official",
+    "location": "インテックス大阪"
+  },
+  {
+    "id": "rage-s2-playoff",
+    "group": "RAGE Japan Championship 2026 Season 2",
+    "name": "RAGE Season 2 プレーオフ",
+    "dates": [
+      "2026-07-20"
     ],
     "phase": "playoff",
     "type": "official",
-    "location": "都内スタジオ"
+    "location": "インテックス大阪"
   },
   {
-    "id": "ecs-kanagawa",
+    "id": "ecs-kanagawa-day1",
     "group": "ECS 2026 神奈川大会",
-    "name": "ECS 2026 神奈川大会 予選",
+    "name": "ECS 2026 神奈川大会 Day1",
     "dates": [
       "2026-08-15"
     ],
@@ -147,7 +222,7 @@
     "location": "パシフィコ横浜"
   },
   {
-    "id": "ecs-kanagawa-po",
+    "id": "ecs-kanagawa-playoff",
     "group": "ECS 2026 神奈川大会",
     "name": "ECS 2026 神奈川大会 プレーオフ",
     "dates": [
@@ -156,6 +231,17 @@
     "phase": "playoff",
     "type": "official",
     "location": "パシフィコ横浜"
+  },
+  {
+    "id": "rage-s2-gf",
+    "group": "RAGE Japan Championship 2026 Season 2",
+    "name": "RAGE Season 2 Grand Finals",
+    "dates": [
+      "2026-08-23"
+    ],
+    "phase": "gf",
+    "type": "official",
+    "location": "都内スタジオ"
   },
   {
     "id": "ics-singapore-day1",
@@ -191,25 +277,46 @@
     "location": "サンテック・シンガポール"
   },
   {
-    "id": "rage-s3-qual",
+    "id": "rage-s3-day1",
     "group": "RAGE Japan Championship 2026 Season 3",
-    "name": "RAGE Season 3 予選",
+    "name": "RAGE Season 3 Day1",
     "dates": [
-      "2026-10-03",
-      "2026-10-04"
+      "2026-10-03"
     ],
     "phase": "day1",
     "type": "official",
     "location": "幕張メッセ"
   },
   {
-    "id": "rage-s3-finals",
+    "id": "rage-s3-day2",
+    "group": "RAGE Japan Championship 2026 Season 3",
+    "name": "RAGE Season 3 Day2",
+    "dates": [
+      "2026-10-04"
+    ],
+    "phase": "day2",
+    "type": "official",
+    "location": "幕張メッセ"
+  },
+  {
+    "id": "rage-s3-playoff",
+    "group": "RAGE Japan Championship 2026 Season 3",
+    "name": "RAGE Season 3 プレーオフ",
+    "dates": [
+      "2026-10-04"
+    ],
+    "phase": "playoff",
+    "type": "official",
+    "location": "幕張メッセ"
+  },
+  {
+    "id": "rage-s3-gf",
     "group": "RAGE Japan Championship 2026 Season 3",
     "name": "RAGE Season 3 Grand Finals",
     "dates": [
       "2026-10-25"
     ],
-    "phase": "playoff",
+    "phase": "gf",
     "type": "official",
     "location": "都内スタジオ"
   },
@@ -248,9 +355,9 @@
     "location": "オンライン"
   },
   {
-    "id": "ecs-fukuoka",
+    "id": "ecs-fukuoka-day1",
     "group": "ECS 2026 福岡大会",
-    "name": "ECS 2026 福岡大会 予選",
+    "name": "ECS 2026 福岡大会 Day1",
     "dates": [
       "2026-11-22"
     ],
@@ -259,7 +366,7 @@
     "location": "博多国際展示場"
   },
   {
-    "id": "ecs-fukuoka-po",
+    "id": "ecs-fukuoka-playoff",
     "group": "ECS 2026 福岡大会",
     "name": "ECS 2026 福岡大会 プレーオフ",
     "dates": [
@@ -270,9 +377,9 @@
     "location": "博多国際展示場"
   },
   {
-    "id": "wcq-osaka",
+    "id": "wcq-osaka-day1",
     "group": "WCQ 2026 Osaka",
-    "name": "WCQ 2026 Osaka 予選",
+    "name": "WCQ 2026 Osaka Day1",
     "dates": [
       "2026-12-05"
     ],
@@ -281,7 +388,7 @@
     "location": "オフライン"
   },
   {
-    "id": "wcq-osaka-po",
+    "id": "wcq-osaka-playoff",
     "group": "WCQ 2026 Osaka",
     "name": "WCQ 2026 Osaka プレーオフ",
     "dates": [
@@ -292,9 +399,9 @@
     "location": "オフライン"
   },
   {
-    "id": "wcq-tokyo",
+    "id": "wcq-tokyo-day1",
     "group": "WCQ 2026 Tokyo",
-    "name": "WCQ 2026 Tokyo 予選",
+    "name": "WCQ 2026 Tokyo Day1",
     "dates": [
       "2026-12-06"
     ],
@@ -303,7 +410,7 @@
     "location": "オフライン"
   },
   {
-    "id": "wcq-tokyo-po",
+    "id": "wcq-tokyo-playoff",
     "group": "WCQ 2026 Tokyo",
     "name": "WCQ 2026 Tokyo プレーオフ",
     "dates": [

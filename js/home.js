@@ -12,31 +12,29 @@ function renderHome(){
   const el = document.getElementById('home-content');
   const now = new Date();
   const todayStr   = now.toISOString().slice(0,10);
-  const thisMonth  = todayStr.slice(0,7);
   const twoWeeksAgo = new Date(now);
   twoWeeksAgo.setDate(twoWeeksAgo.getDate()-14);
   const twoWeeksAgoStr = twoWeeksAgo.toISOString().slice(0,10);
-  const nextMonth = (() => {
-    const d = new Date(now.getFullYear(), now.getMonth()+1, 1);
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-  })();
+  const thirtyDaysLater = new Date(now);
+  thirtyDaysLater.setDate(thirtyDaysLater.getDate()+30);
+  const thirtyDaysLaterStr = thirtyDaysLater.toISOString().slice(0,10);
 
-  if(homeTab==='current')  renderCurrentTab(el, thisMonth, twoWeeksAgoStr);
+  if(homeTab==='current')  renderCurrentTab(el, todayStr, twoWeeksAgoStr, thirtyDaysLaterStr);
   if(homeTab==='past')     renderPastTab(el, twoWeeksAgoStr);
-  if(homeTab==='upcoming') renderUpcomingTab(el, nextMonth);
-  if(homeTab==='pastall')  renderPastAllTab(el, thisMonth);
+  if(homeTab==='upcoming') renderUpcomingTab(el, todayStr);
+  if(homeTab==='pastall')  renderPastAllTab(el, todayStr);
 }
 
-// ── 当月・直近：公式スケジュール＋ユーザー登録済み ──
-function renderCurrentTab(el, thisMonth, twoWeeksAgoStr){
-  // 公式スケジュールから当月 + 過去14日以内
+// ── 当月・直近：-14日〜+30日の公式スケジュール＋ユーザー登録済み ──
+function renderCurrentTab(el, todayStr, twoWeeksAgoStr, thirtyDaysLaterStr){
+  // 公式スケジュールから -14日〜+30日
   const entries = officialSchedule
-    .filter(e => e.dates[0].slice(0,7)===thisMonth || e.dates[0]>=twoWeeksAgoStr)
+    .filter(e => e.dates[0] >= twoWeeksAgoStr && e.dates[0] <= thirtyDaysLaterStr)
     .sort((a,b)=>a.dates[0].localeCompare(b.dates[0]));
 
-  // カスタム大会（officialIdなし）
+  // カスタム大会（officialIdなし）同範囲
   const customList = S.tournaments
-    .filter(t => !t.officialId && (t.date.slice(0,7)===thisMonth || t.date>=twoWeeksAgoStr));
+    .filter(t => !t.officialId && t.date >= twoWeeksAgoStr && t.date <= thirtyDaysLaterStr);
 
   if(!entries.length && !customList.length){
     el.innerHTML='<div class="empty">当月・直近の大会はありません</div>'; return;
@@ -54,19 +52,32 @@ function renderCurrentTab(el, thisMonth, twoWeeksAgoStr){
   el.innerHTML = buildMonthGroupsFromRows(rows);
 }
 
-// ── 過去の記録：ユーザー登録済みのみ ──
+// ── 記録：ユーザー登録済み全件 ──
+let pastSortOrder = 'desc'; // desc=新しい順 asc=古い順
 function renderPastTab(el, twoWeeksAgoStr){
-  const list = S.tournaments
-    .filter(t=>t.date<twoWeeksAgoStr)
-    .sort((a,b)=>b.date.localeCompare(a.date));
-  if(!list.length){ el.innerHTML='<div class="empty">過去の記録はありません</div>'; return; }
-  el.innerHTML = buildMonthGroupsFromRows(list.map(t=>({ date:t.date, html:buildRegisteredCard(t) })));
+  const list = [...S.tournaments].sort((a,b)=>
+    pastSortOrder==='desc' ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date)
+  );
+  const sortBtn = `<div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+    <button class="btn btn-sm" onclick="togglePastSort()">
+      ${pastSortOrder==='desc'?'新しい順 ▼':'古い順 ▲'}
+    </button>
+  </div>`;
+  if(!list.length){ el.innerHTML='<div class="empty">記録がありません</div>'; return; }
+  el.innerHTML = sortBtn + buildMonthGroupsFromRows(list.map(t=>({ date:t.date, html:buildRegisteredCard(t) })));
+}
+function togglePastSort(){
+  pastSortOrder = pastSortOrder==='desc'?'asc':'desc';
+  const el=document.getElementById('home-content');
+  const now=new Date();
+  const twoWeeksAgo=new Date(now); twoWeeksAgo.setDate(twoWeeksAgo.getDate()-14);
+  renderPastTab(el, twoWeeksAgo.toISOString().slice(0,10));
 }
 
-// ── 今後の公式大会：来月以降の公式スケジュール ──
-function renderUpcomingTab(el, nextMonth){
+// ── 今後の公式大会：今日以降の公式スケジュール ──
+function renderUpcomingTab(el, todayStr){
   const entries = officialSchedule
-    .filter(e=>e.dates[0].slice(0,7)>=nextMonth)
+    .filter(e=>e.dates[0]>=todayStr)
     .sort((a,b)=>a.dates[0].localeCompare(b.dates[0]));
   if(!entries.length){ el.innerHTML='<div class="empty">今後の公式大会情報はありません</div>'; return; }
   const rows = entries.map(e=>{
@@ -76,10 +87,10 @@ function renderUpcomingTab(el, nextMonth){
   el.innerHTML = buildMonthGroupsFromRows(rows);
 }
 
-// ── 過去の公式大会：今月より前の公式スケジュール ──
-function renderPastAllTab(el, thisMonth){
+// ── 過去の公式大会：今日より前の公式スケジュール ──
+function renderPastAllTab(el, todayStr){
   const entries = officialSchedule
-    .filter(e=>e.dates[0].slice(0,7)<thisMonth)
+    .filter(e=>e.dates[0]<todayStr)
     .sort((a,b)=>b.dates[0].localeCompare(a.dates[0]));
   if(!entries.length){ el.innerHTML='<div class="empty">過去の公式大会情報はありません</div>'; return; }
   const rows = entries.map(e=>{

@@ -12,8 +12,8 @@ const CLASS_ICONS = {
 };
 
 const CLASSES     = ['エルフ','ロイヤル','ウィッチ','ドラゴン','ナイトメア','ビショップ','ネメシス'];
-const PHASE_LABEL = { day1: 'Day1', day2: 'Day2', playoff: 'プレーオフ' };
-const PHASE_CLS   = { day1: 'b-phase-day1', day2: 'b-phase-day2', playoff: 'b-phase-playoff' };
+const PHASE_LABEL = { day1: 'Day1', day2: 'Day2', playoff: 'プレーオフ', gf: 'GF' };
+const PHASE_CLS   = { day1: 'b-phase-day1', day2: 'b-phase-day2', playoff: 'b-phase-playoff', gf: 'b-phase-gf' };
 const PRESET_TAGS = ['公式', '非公式'];
 
 function clsIcon(name, size=16){
@@ -44,6 +44,16 @@ function loadState(){
     const raw = localStorage.getItem('sv_matchlog_v2');
     if(raw) S = JSON.parse(raw);
     if(!S.tags) S.tags = [];
+    // 移行：groupがnameと同一の古いデータを修正
+    S.tournaments.forEach(t=>{
+      if(!t.group || t.group===t.name){
+        // nameからフェーズラベルを除去してgroupを生成
+        const phaseLabels = ['Day1','Day2','プレーオフ','GF','Grand Finals','予選'];
+        let g = t.name;
+        phaseLabels.forEach(label=>{ g = g.replace(new RegExp('\\s*'+label+'$'),'').trim(); });
+        t.group = g || t.name;
+      }
+    });
   } catch(e){ console.warn('loadState error', e); }
 }
 function getDeck(id){ return S.decks.find(d=>d.id===id)||null; }

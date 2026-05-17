@@ -126,6 +126,7 @@ function buildTournamentForm({group,date,phase,tags,officialId,isNew,id,d1,d2}){
         <option value="day1"${phase==='day1'?' selected':''}>Day1</option>
         <option value="day2"${phase==='day2'?' selected':''}>Day2</option>
         <option value="playoff"${phase==='playoff'?' selected':''}>プレーオフ</option>
+        <option value="gf"${phase==='gf'?' selected':''}>GF</option>
       </select>
     </div>
     <div class="mfg"><label>タグ</label>
