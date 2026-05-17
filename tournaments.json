@@ -34,7 +34,7 @@
     "phase": "playoff",
     "type": "official",
     "location": "オンライン",
-    "format": "bo1"
+    "format": "bo3"
   },
   {
     "id": "ecs-miyagi-day1",
@@ -191,7 +191,7 @@
     "phase": "playoff",
     "type": "official",
     "location": "オンライン",
-    "format": "bo1"
+    "format": "bo3"
   },
   {
     "id": "rage-s2-day1",
@@ -384,7 +384,7 @@
     "phase": "playoff",
     "type": "official",
     "location": "オンライン",
-    "format": "bo1"
+    "format": "bo3"
   },
   {
     "id": "ecs-fukuoka-day1",
