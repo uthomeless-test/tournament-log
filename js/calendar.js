@@ -116,7 +116,7 @@ function openNewTournamentModal(date,officialEvent){
   openModal(buildTournamentForm({group,date,phase,format,tags:defaultTags,officialId:officialEvent?.id||null,isNew:true}));
 }
 
-function buildTournamentForm({group,date,phase,tags,officialId,isNew,id,d1,d2}){
+function buildTournamentForm({group,date,phase,format,tags,officialId,isNew,id,d1,d2}){
   const saveCall=isNew?`saveTournament('${officialId||'null'}')`:`saveEditTournament(${id})`;
   return `<div class="modal-title">${isNew?'大会を登録':'大会を編集'}</div>
     <div class="mfg"><label>大会グループ名</label><input id="m-tgroup" type="text" value="${group||''}" placeholder="例: ECS 2026 大阪大会" /></div>
