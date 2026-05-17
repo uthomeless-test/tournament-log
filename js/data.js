@@ -14,6 +14,7 @@ const CLASS_ICONS = {
 const CLASSES     = ['エルフ','ロイヤル','ウィッチ','ドラゴン','ナイトメア','ビショップ','ネメシス'];
 const PHASE_LABEL = { day1: 'Day1', day2: 'Day2', playoff: 'プレーオフ' };
 const PHASE_CLS   = { day1: 'b-phase-day1', day2: 'b-phase-day2', playoff: 'b-phase-playoff' };
+const PRESET_TAGS = ['公式', '非公式'];
 
 function clsIcon(name, size=16){
   const src = CLASS_ICONS[name];
@@ -23,12 +24,17 @@ function clsOpts(selected='エルフ'){
   return CLASSES.map(c=>`<option value="${c}"${c===selected?' selected':''}>${c}</option>`).join('');
 }
 
+// 公式判定：type=officialまたはタグに「公式」を含む
+function isOfficial(t){
+  return t.type==='official' || (t.tags||[]).includes('公式');
+}
+
 // ══════════════════════════════════════════════
 // 状態管理
 // ══════════════════════════════════════════════
 let S = { tournaments: [], decks: [], tags: [], nextTId: 1, nextDId: 1, nextRId: 1 };
 let currentTId = null;
-let currentAnalysisTId = null;
+let currentAnalysisTId = null; // 分析画面に飛ぶときのtournament id
 let homeTab = 'current';
 let officialSchedule = [];
 
@@ -37,6 +43,7 @@ function loadState(){
   try {
     const raw = localStorage.getItem('sv_matchlog_v2');
     if(raw) S = JSON.parse(raw);
+    if(!S.tags) S.tags = [];
   } catch(e){ console.warn('loadState error', e); }
 }
 function getDeck(id){ return S.decks.find(d=>d.id===id)||null; }
@@ -69,8 +76,8 @@ function showPage(name){
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
   document.querySelector(`.nav-tab[data-page="${name}"]`)?.classList.add('active');
-  if(name==='home')   renderHome();
-  if(name==='record') renderRecord();
+  if(name==='home')     renderHome();
+  if(name==='record')   renderRecord();
   if(name==='analysis') renderAnalysis();
 }
 
@@ -101,6 +108,7 @@ function importData(input){
           deckIdMap[d.id] = newId;
           S.decks.push({...d, id:newId});
         });
+        (imported.tags||[]).forEach(tag=>{ if(!S.tags.includes(tag)) S.tags.push(tag); });
         (imported.tournaments||[]).forEach(t=>{
           S.tournaments.push({
             ...t,

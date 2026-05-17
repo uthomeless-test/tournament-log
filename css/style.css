@@ -118,7 +118,7 @@ td { border: 0.5px solid var(--border); padding: 7px 8px; text-align: center; ve
 .home-card-actions { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
 
 /* ── カレンダー ── */
-.modal-box.cal-modal { max-width: 560px; }
+.modal-box.cal-modal { max-width: 720px; }
 .calendar-wrap { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin-bottom: 10px; width: 100%; }
 .cal-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px 8px; border-bottom: 0.5px solid var(--border); }
 .cal-month-label { font-size: 14px; font-weight: 600; }
