@@ -394,7 +394,7 @@ function renderBO3Table(el, t){
     const games = r.games||[];
     const gameCell = (g)=>{
       if(!g) return '<td style="color:var(--text3)">-</td>';
-      const dk=getDeck(g.myDeckId);
+      const dk=getDeck(Number(g.myDeckId));
       const turnLabel=g.turn==='first'?'先':g.turn==='second'?'後':'-';
       return `<td style="font-size:12px">
         <div style="display:flex;flex-direction:column;gap:2px;align-items:center">
