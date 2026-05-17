@@ -86,9 +86,10 @@ function showPage(name){
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
   document.querySelector(`.nav-tab[data-page="${name}"]`)?.classList.add('active');
-  if(name==='home')     renderHome();
-  if(name==='record')   renderRecord();
-  if(name==='analysis') renderAnalysis();
+  if(name==='home')        renderHome();
+  if(name==='allrecords')   renderAllRecords();
+  if(name==='record')       renderRecord();
+  if(name==='analysis')     renderAnalysis();
 }
 
 function openModal(html){ document.getElementById('modal-box').innerHTML=html; document.getElementById('modal-bg').classList.add('open'); }

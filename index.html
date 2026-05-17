@@ -13,7 +13,7 @@
     <span class="app-logo" onclick="showPage('home')">SV Tournament Log</span>
     <nav class="nav-tabs">
       <button class="nav-tab active" data-page="home">ホーム</button>
-      <button class="nav-tab" data-page="record">記録</button>
+      <button class="nav-tab" data-page="allrecords">記録</button>
       <button class="nav-tab" data-page="analysis">分析</button>
       <button class="nav-tab" data-page="help">使い方</button>
     </nav>
@@ -33,11 +33,21 @@
   </div>
   <div class="home-tabs">
     <button class="home-tab active" onclick="switchHomeTab('current', this)">当月・直近</button>
-    <button class="home-tab" onclick="switchHomeTab('past', this)">記録</button>
     <button class="home-tab" onclick="switchHomeTab('upcoming', this)">今後の公式大会</button>
     <button class="home-tab" onclick="switchHomeTab('pastall', this)">過去の公式大会</button>
   </div>
   <div id="home-content"></div>
+</div>
+
+<!-- 全大会一覧（記録） -->
+<div id="page-allrecords" class="page">
+  <div class="page-header">
+    <h1 class="page-title">記録</h1>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn btn-sm" id="allrecords-sort-btn" onclick="toggleAllRecordsSort()">新しい順 ▼</button>
+    </div>
+  </div>
+  <div id="allrecords-content"></div>
 </div>
 
 <!-- 記録 -->

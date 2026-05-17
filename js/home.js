@@ -20,7 +20,6 @@ function renderHome(){
   const thirtyDaysLaterStr = thirtyDaysLater.toISOString().slice(0,10);
 
   if(homeTab==='current')  renderCurrentTab(el, todayStr, twoWeeksAgoStr, thirtyDaysLaterStr);
-  if(homeTab==='past')     renderPastTab(el, twoWeeksAgoStr);
   if(homeTab==='upcoming') renderUpcomingTab(el, todayStr);
   if(homeTab==='pastall')  renderPastAllTab(el, todayStr);
 }
@@ -52,26 +51,25 @@ function renderCurrentTab(el, todayStr, twoWeeksAgoStr, thirtyDaysLaterStr){
   el.innerHTML = buildMonthGroupsFromRows(rows);
 }
 
-// ── 記録：ユーザー登録済み全件 ──
-let pastSortOrder = 'desc'; // desc=新しい順 asc=古い順
-function renderPastTab(el, twoWeeksAgoStr){
+// ── 全大会一覧（記録ページ・ナビから呼ばれる） ──
+let allRecordsSortOrder = 'desc';
+function renderAllRecords(){
+  const el = document.getElementById('allrecords-content');
+  if(!el) return;
   const list = [...S.tournaments].sort((a,b)=>
-    pastSortOrder==='desc' ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date)
+    allRecordsSortOrder==='desc' ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date)
   );
-  const sortBtn = `<div style="display:flex;justify-content:flex-end;margin-bottom:8px">
-    <button class="btn btn-sm" onclick="togglePastSort()">
-      ${pastSortOrder==='desc'?'新しい順 ▼':'古い順 ▲'}
-    </button>
-  </div>`;
-  if(!list.length){ el.innerHTML='<div class="empty">記録がありません</div>'; return; }
-  el.innerHTML = sortBtn + buildMonthGroupsFromRows(list.map(t=>({ date:t.date, html:buildRegisteredCard(t) })));
+  const btn = document.getElementById('allrecords-sort-btn');
+  if(btn) btn.textContent = allRecordsSortOrder==='desc'?'新しい順 ▼':'古い順 ▲';
+  if(!list.length){
+    el.innerHTML='<div class="empty"><p style="margin-bottom:12px">大会が登録されていません</p><button class="btn btn-primary" onclick="openCalendarModal()">＋ 新しい大会を登録</button></div>';
+    return;
+  }
+  el.innerHTML = buildMonthGroupsFromRows(list.map(t=>({ date:t.date, html:buildRegisteredCard(t) })));
 }
-function togglePastSort(){
-  pastSortOrder = pastSortOrder==='desc'?'asc':'desc';
-  const el=document.getElementById('home-content');
-  const now=new Date();
-  const twoWeeksAgo=new Date(now); twoWeeksAgo.setDate(twoWeeksAgo.getDate()-14);
-  renderPastTab(el, twoWeeksAgo.toISOString().slice(0,10));
+function toggleAllRecordsSort(){
+  allRecordsSortOrder = allRecordsSortOrder==='desc'?'asc':'desc';
+  renderAllRecords();
 }
 
 // ── 今後の公式大会：今日以降の公式スケジュール ──
