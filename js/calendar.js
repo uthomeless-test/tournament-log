@@ -109,11 +109,11 @@ function addCustomTag(){
 // 新規大会登録・編集モーダル
 // ══════════════════════════════════════════════
 function openNewTournamentModal(date,officialEvent){
-  // 公式大会の場合：groupがグループ名、nameは「group + フェーズ」で自動生成
   const group=officialEvent?officialEvent.group:'';
   const phase=officialEvent?officialEvent.phase:'day1';
+  const format=officialEvent?officialEvent.format:'bo1';
   const defaultTags=officialEvent?['公式']:[];
-  openModal(buildTournamentForm({group,date,phase,tags:defaultTags,officialId:officialEvent?.id||null,isNew:true}));
+  openModal(buildTournamentForm({group,date,phase,format,tags:defaultTags,officialId:officialEvent?.id||null,isNew:true}));
 }
 
 function buildTournamentForm({group,date,phase,tags,officialId,isNew,id,d1,d2}){
@@ -127,6 +127,12 @@ function buildTournamentForm({group,date,phase,tags,officialId,isNew,id,d1,d2}){
         <option value="day2"${phase==='day2'?' selected':''}>Day2</option>
         <option value="playoff"${phase==='playoff'?' selected':''}>プレーオフ</option>
         <option value="gf"${phase==='gf'?' selected':''}>GF</option>
+      </select>
+    </div>
+    <div class="mfg"><label>対戦形式</label>
+      <select id="m-tformat">
+        <option value="bo1"${format==='bo1'?' selected':''}>2デッキBO1</option>
+        <option value="bo3"${format==='bo3'?' selected':''}>2デッキBO3</option>
       </select>
     </div>
     <div class="mfg"><label>タグ</label>
@@ -154,14 +160,14 @@ function saveTournament(officialId){
   const date=document.getElementById('m-tdate').value;
   const phase=document.getElementById('m-tphase').value;
   const tags=getSelectedTags();
+  const format=document.getElementById('m-tformat').value;
   if(!group) return alert('大会グループ名を入力してください');
   if(!date)  return alert('日付を入力してください');
-  // 表示名 = グループ名 + フェーズラベル
   const name=`${group} ${PHASE_LABEL[phase]}`;
   const deckId1=getOrCreateDeck(document.getElementById('m-dcls1').value,document.getElementById('m-dname1').value.trim());
   const deckId2=getOrCreateDeck(document.getElementById('m-dcls2').value,document.getElementById('m-dname2').value.trim());
   const t={
-    id:S.nextTId++, name, group, date, phase,
+    id:S.nextTId++, name, group, date, phase, format,
     tags,
     type:(officialId&&officialId!=='null')?'official':'custom',
     officialId:(officialId&&officialId!=='null')?officialId:null,
@@ -175,6 +181,7 @@ function openEditTournament(id){
   const d1=getDeck(t.deckId1); const d2=getDeck(t.deckId2);
   openModal(buildTournamentForm({
     group:t.group||t.name, date:t.date||'', phase:t.phase,
+    format:t.format||'bo1',
     tags:t.tags||[], officialId:t.officialId, isNew:false, id, d1, d2
   }));
 }
@@ -187,6 +194,7 @@ function saveEditTournament(id){
   t.name=`${group} ${PHASE_LABEL[phase]}`;
   t.date=document.getElementById('m-tdate').value;
   t.phase=phase;
+  t.format=document.getElementById('m-tformat').value;
   t.tags=getSelectedTags();
   t.deckId1=getOrCreateDeck(document.getElementById('m-dcls1').value,document.getElementById('m-dname1').value.trim());
   t.deckId2=getOrCreateDeck(document.getElementById('m-dcls2').value,document.getElementById('m-dname2').value.trim());

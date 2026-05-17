@@ -86,6 +86,14 @@
       </select>
     </div>
     <div style="display:flex;flex-direction:column;gap:2px">
+      <label style="font-size:11px;color:var(--text2)">対戦形式</label>
+      <select id="an-format" onchange="_runAnalysis()" style="height:30px;font-size:12px">
+        <option value="">すべての形式</option>
+        <option value="bo1">2デッキBO1</option>
+        <option value="bo3">2デッキBO3</option>
+      </select>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2px">
       <label style="font-size:11px;color:var(--text2)">タグ</label>
       <select id="an-tag" onchange="_runAnalysis()" style="height:30px;font-size:12px">
         <option value="">すべてのタグ</option>

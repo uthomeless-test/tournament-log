@@ -9,7 +9,8 @@
     ],
     "phase": "day1",
     "type": "official",
-    "location": "オンライン"
+    "location": "オンライン",
+    "format": "bo1"
   },
   {
     "id": "ocs-feb-day2",
@@ -20,7 +21,8 @@
     ],
     "phase": "day2",
     "type": "official",
-    "location": "オンライン"
+    "location": "オンライン",
+    "format": "bo1"
   },
   {
     "id": "ocs-feb-playoff",
@@ -31,7 +33,8 @@
     ],
     "phase": "playoff",
     "type": "official",
-    "location": "オンライン"
+    "location": "オンライン",
+    "format": "bo1"
   },
   {
     "id": "ecs-miyagi-day1",
@@ -42,7 +45,8 @@
     ],
     "phase": "day1",
     "type": "official",
-    "location": "仙台国際センター"
+    "location": "仙台国際センター",
+    "format": "bo1"
   },
   {
     "id": "ecs-miyagi-playoff",
@@ -53,7 +57,8 @@
     ],
     "phase": "playoff",
     "type": "official",
-    "location": "仙台国際センター"
+    "location": "仙台国際センター",
+    "format": "bo1"
   },
   {
     "id": "ecs-aichi-day1",
@@ -64,7 +69,8 @@
     ],
     "phase": "day1",
     "type": "official",
-    "location": "Aichi Sky Expo"
+    "location": "Aichi Sky Expo",
+    "format": "bo1"
   },
   {
     "id": "ecs-aichi-playoff",
@@ -75,7 +81,8 @@
     ],
     "phase": "playoff",
     "type": "official",
-    "location": "Aichi Sky Expo"
+    "location": "Aichi Sky Expo",
+    "format": "bo1"
   },
   {
     "id": "rage-s1-day1",
@@ -86,7 +93,8 @@
     ],
     "phase": "day1",
     "type": "official",
-    "location": "幕張メッセ"
+    "location": "幕張メッセ",
+    "format": "bo1"
   },
   {
     "id": "rage-s1-day2",
@@ -97,7 +105,8 @@
     ],
     "phase": "day2",
     "type": "official",
-    "location": "幕張メッセ"
+    "location": "幕張メッセ",
+    "format": "bo1"
   },
   {
     "id": "rage-s1-playoff",
@@ -108,7 +117,8 @@
     ],
     "phase": "playoff",
     "type": "official",
-    "location": "幕張メッセ"
+    "location": "幕張メッセ",
+    "format": "bo3"
   },
   {
     "id": "rage-s1-gf",
@@ -119,7 +129,8 @@
     ],
     "phase": "gf",
     "type": "official",
-    "location": "都内スタジオ"
+    "location": "都内スタジオ",
+    "format": "bo3"
   },
   {
     "id": "ecs-osaka-day1",
@@ -130,7 +141,8 @@
     ],
     "phase": "day1",
     "type": "official",
-    "location": "グランキューブ大阪"
+    "location": "グランキューブ大阪",
+    "format": "bo1"
   },
   {
     "id": "ecs-osaka-playoff",
@@ -141,7 +153,8 @@
     ],
     "phase": "playoff",
     "type": "official",
-    "location": "グランキューブ大阪"
+    "location": "グランキューブ大阪",
+    "format": "bo1"
   },
   {
     "id": "ocs-may-day1",
@@ -153,7 +166,8 @@
     ],
     "phase": "day1",
     "type": "official",
-    "location": "オンライン"
+    "location": "オンライン",
+    "format": "bo1"
   },
   {
     "id": "ocs-may-day2",
@@ -164,7 +178,8 @@
     ],
     "phase": "day2",
     "type": "official",
-    "location": "オンライン"
+    "location": "オンライン",
+    "format": "bo1"
   },
   {
     "id": "ocs-may-playoff",
@@ -175,7 +190,8 @@
     ],
     "phase": "playoff",
     "type": "official",
-    "location": "オンライン"
+    "location": "オンライン",
+    "format": "bo1"
   },
   {
     "id": "rage-s2-day1",
@@ -186,7 +202,8 @@
     ],
     "phase": "day1",
     "type": "official",
-    "location": "インテックス大阪"
+    "location": "インテックス大阪",
+    "format": "bo1"
   },
   {
     "id": "rage-s2-day2",
@@ -197,7 +214,8 @@
     ],
     "phase": "day2",
     "type": "official",
-    "location": "インテックス大阪"
+    "location": "インテックス大阪",
+    "format": "bo1"
   },
   {
     "id": "rage-s2-playoff",
@@ -208,7 +226,8 @@
     ],
     "phase": "playoff",
     "type": "official",
-    "location": "インテックス大阪"
+    "location": "インテックス大阪",
+    "format": "bo3"
   },
   {
     "id": "ecs-kanagawa-day1",
@@ -219,7 +238,8 @@
     ],
     "phase": "day1",
     "type": "official",
-    "location": "パシフィコ横浜"
+    "location": "パシフィコ横浜",
+    "format": "bo1"
   },
   {
     "id": "ecs-kanagawa-playoff",
@@ -230,7 +250,8 @@
     ],
     "phase": "playoff",
     "type": "official",
-    "location": "パシフィコ横浜"
+    "location": "パシフィコ横浜",
+    "format": "bo1"
   },
   {
     "id": "rage-s2-gf",
@@ -241,7 +262,8 @@
     ],
     "phase": "gf",
     "type": "official",
-    "location": "都内スタジオ"
+    "location": "都内スタジオ",
+    "format": "bo3"
   },
   {
     "id": "ics-singapore-day1",
@@ -252,7 +274,8 @@
     ],
     "phase": "day1",
     "type": "official",
-    "location": "サンテック・シンガポール"
+    "location": "サンテック・シンガポール",
+    "format": "bo1"
   },
   {
     "id": "ics-singapore-day2",
@@ -263,7 +286,8 @@
     ],
     "phase": "day2",
     "type": "official",
-    "location": "サンテック・シンガポール"
+    "location": "サンテック・シンガポール",
+    "format": "bo1"
   },
   {
     "id": "ics-singapore-playoff",
@@ -274,7 +298,8 @@
     ],
     "phase": "playoff",
     "type": "official",
-    "location": "サンテック・シンガポール"
+    "location": "サンテック・シンガポール",
+    "format": "bo3"
   },
   {
     "id": "rage-s3-day1",
@@ -285,7 +310,8 @@
     ],
     "phase": "day1",
     "type": "official",
-    "location": "幕張メッセ"
+    "location": "幕張メッセ",
+    "format": "bo1"
   },
   {
     "id": "rage-s3-day2",
@@ -296,7 +322,8 @@
     ],
     "phase": "day2",
     "type": "official",
-    "location": "幕張メッセ"
+    "location": "幕張メッセ",
+    "format": "bo1"
   },
   {
     "id": "rage-s3-playoff",
@@ -307,7 +334,8 @@
     ],
     "phase": "playoff",
     "type": "official",
-    "location": "幕張メッセ"
+    "location": "幕張メッセ",
+    "format": "bo3"
   },
   {
     "id": "rage-s3-gf",
@@ -318,7 +346,8 @@
     ],
     "phase": "gf",
     "type": "official",
-    "location": "都内スタジオ"
+    "location": "都内スタジオ",
+    "format": "bo3"
   },
   {
     "id": "ocs-nov-day1",
@@ -330,7 +359,8 @@
     ],
     "phase": "day1",
     "type": "official",
-    "location": "オンライン"
+    "location": "オンライン",
+    "format": "bo1"
   },
   {
     "id": "ocs-nov-day2",
@@ -341,7 +371,8 @@
     ],
     "phase": "day2",
     "type": "official",
-    "location": "オンライン"
+    "location": "オンライン",
+    "format": "bo1"
   },
   {
     "id": "ocs-nov-playoff",
@@ -352,7 +383,8 @@
     ],
     "phase": "playoff",
     "type": "official",
-    "location": "オンライン"
+    "location": "オンライン",
+    "format": "bo1"
   },
   {
     "id": "ecs-fukuoka-day1",
@@ -363,7 +395,8 @@
     ],
     "phase": "day1",
     "type": "official",
-    "location": "博多国際展示場"
+    "location": "博多国際展示場",
+    "format": "bo1"
   },
   {
     "id": "ecs-fukuoka-playoff",
@@ -374,7 +407,8 @@
     ],
     "phase": "playoff",
     "type": "official",
-    "location": "博多国際展示場"
+    "location": "博多国際展示場",
+    "format": "bo1"
   },
   {
     "id": "wcq-osaka-day1",
@@ -385,7 +419,8 @@
     ],
     "phase": "day1",
     "type": "official",
-    "location": "オフライン"
+    "location": "オフライン",
+    "format": "bo1"
   },
   {
     "id": "wcq-osaka-playoff",
@@ -396,7 +431,8 @@
     ],
     "phase": "playoff",
     "type": "official",
-    "location": "オフライン"
+    "location": "オフライン",
+    "format": "bo1"
   },
   {
     "id": "wcq-tokyo-day1",
@@ -407,7 +443,8 @@
     ],
     "phase": "day1",
     "type": "official",
-    "location": "オフライン"
+    "location": "オフライン",
+    "format": "bo1"
   },
   {
     "id": "wcq-tokyo-playoff",
@@ -418,6 +455,7 @@
     ],
     "phase": "playoff",
     "type": "official",
-    "location": "オフライン"
+    "location": "オフライン",
+    "format": "bo1"
   }
 ]

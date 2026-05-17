@@ -30,14 +30,17 @@ function renderAnalysis(){
 function _runAnalysis(){
   const groupVal=document.getElementById('an-group').value;
   const phaseVal=document.getElementById('an-phase').value;
+  const formatVal=document.getElementById('an-format')?.value||'';
   const tagVal=document.getElementById('an-tag').value;
 
   let recs=[];
   S.tournaments.forEach(t=>{
     if(groupVal&&(t.group||t.name)!==groupVal) return;
     if(phaseVal&&t.phase!==phaseVal) return;
+    if(formatVal&&(t.format||'bo1')!==formatVal) return;
     if(tagVal&&!(t.tags||[]).includes(tagVal)) return;
-    (t.records||[]).forEach(r=>recs.push({...r,_tname:t.name,_tid:t.id}));
+    // BO1のみ分析対象（BO3は別途集計が必要なため現状BO1のみ）
+    (t.records||[]).filter(r=>!r.format||r.format==='bo1').forEach(r=>recs.push({...r,_tname:t.name,_tid:t.id}));
   });
 
   const el=document.getElementById('analysis-content');
