@@ -112,32 +112,34 @@
     <div style="font-size:13px;font-weight:600;margin-bottom:10px">① 大会を登録する</div>
     <p style="font-size:13px;color:var(--text2);line-height:1.7">
       ホーム画面の「＋ 新しい大会を登録」ボタンを押すとカレンダーが表示されます。<br>
-      公式大会（RAGE・OCS・ECS・ICS・WCQ）はカレンダー上に金色で自動表示されます。大会名をクリックすると名前・日付・フェーズが自動入力されます。<br>
-      <strong>日付をクリックすると、任意の大会を手動で登録できます。</strong>カスタム大会にも対応しています。<br>
-      登録時にタグを付けることができます。タグは「公式」「非公式」から選ぶか、独自のタグを追加できます。
+      公式大会（RAGE・OCS・ECS・ICS・WCQ）はカレンダー上に金色で自動表示されます。大会名をクリックすると大会グループ名・日付・フェーズ・対戦形式・タグ（公式）が自動入力されます。<br>
+      <strong>日付をクリックすると、任意の大会を手動で登録できます。</strong>フェーズは「-」、タグは「非公式」がデフォルトで設定されます。<br>
+      登録時に対戦形式（2デッキBO1 / 2デッキBO3）を選択できます。公式大会は大会種別に応じて自動設定されます。<br>
+      タグは「公式」「非公式」から選ぶか、独自のタグを追加できます。複数選択可能です。
     </p>
   </div>
 
   <div class="card sec">
     <div style="font-size:13px;font-weight:600;margin-bottom:10px">② ホーム画面のタブについて</div>
     <p style="font-size:13px;color:var(--text2);line-height:1.7">
-      <strong>当月・直近</strong>：今月と過去2週間以内の公式スケジュールを表示します。未登録の大会は点線カードで表示され、「登録」ボタンから参加登録できます。<br>
-      <strong>過去の記録</strong>：2週間より前の自分の登録済み大会の記録一覧です。<br>
-      <strong>今後の公式大会</strong>：来月以降の公式スケジュールです。事前に確認して登録できます。<br>
-      <strong>過去の公式大会</strong>：過去の公式スケジュール全件です。
+      <strong>当月・直近</strong>：今日の前後14日〜30日の範囲の公式スケジュールと登録済み大会を表示します。未登録の公式大会は点線カードで表示され「登録」ボタンから参加登録できます。<br>
+      <strong>記録</strong>：自分が登録したすべての大会の記録一覧です。新しい順・古い順を切り替えできます。<br>
+      <strong>今後の公式大会</strong>：今日以降の公式スケジュール全件です。事前に確認して登録できます。<br>
+      <strong>過去の公式大会</strong>：今日より前の公式スケジュール全件です。
     </p>
   </div>
 
   <div class="card sec">
     <div style="font-size:13px;font-weight:600;margin-bottom:10px">③ フェーズについて</div>
     <p style="font-size:13px;color:var(--text2);line-height:1.7">
-      各大会には <strong>Day1</strong>・<strong>Day2</strong>・<strong>プレーオフ</strong> のフェーズがあります。<br>
-      Day2・プレーオフは、対応する日付の大会をカレンダーから別途登録してください。同じ大会グループ名にすることで分析でまとめて集計できます。
+      フェーズは <strong>-</strong>・<strong>Day1</strong>・<strong>Day2</strong>・<strong>プレーオフ</strong>・<strong>GF</strong> から選択します。<br>
+      同じ大会の複数フェーズ（例：RAGE Day1・Day2・プレーオフ・GF）はそれぞれ別の大会として登録します。大会グループ名を同じにすることで、分析画面でまとめて集計できます。<br>
+      公式大会から登録した場合はフェーズが自動設定されます。<strong>-</strong> は練習会やカスタム大会など、フェーズ区分が不要な場合に使います。
     </p>
   </div>
 
   <div class="card sec">
-    <div style="font-size:13px;font-weight:600;margin-bottom:10px">④ 試合を記録する</div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px">④ 試合を記録する（2デッキBO1）</div>
     <p style="font-size:13px;color:var(--text2);line-height:1.7">
       記録画面のフォームから1試合ずつ入力します。<br>
       自分のデッキ・相手の持ち込み2デッキ・相手の選出・先後・勝敗を入力して「追加」または
@@ -147,16 +149,26 @@
   </div>
 
   <div class="card sec">
-    <div style="font-size:13px;font-weight:600;margin-bottom:10px">⑤ 分析する</div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px">⑤ 試合を記録する（2デッキBO3）</div>
     <p style="font-size:13px;color:var(--text2);line-height:1.7">
-      分析タブでは <strong>大会グループ</strong>・<strong>フェーズ</strong>・<strong>タグ</strong> の3軸で絞り込んで集計できます。<br>
-      ホーム画面の各大会カードの「分析」ボタンを押すと、その大会グループが自動選択された状態で分析画面に移動します。<br>
-      大会グループを「ECS 2026 大阪大会」にするとDay1・プレーオフをまとめて集計、フェーズで「Day1」を選ぶと絞り込み集計ができます。
+      2デッキBO3は自分の2デッキ両方で1勝ずつ取ることでセット勝利となるルールです。<br>
+      相手の持ち込み2デッキを先に入力し、第1戦〜第3戦を入力します。第3戦は1勝1敗になった場合のみ入力可能になります。<br>
+      勝利済みのデッキは次の戦で自動的に確定します。負けた側は2デッキのどちらを出してもよいため手動で選択します。<br>
+      セット勝敗は自分が2種のデッキで各1勝取った時点で勝ち、相手が先にそれを達成した場合は負けと判定されます。
     </p>
   </div>
 
   <div class="card sec">
-    <div style="font-size:13px;font-weight:600;margin-bottom:10px">⑥ シェア・保存する</div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px">⑥ 分析する</div>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7">
+      分析タブでは <strong>大会グループ</strong>・<strong>フェーズ</strong>・<strong>対戦形式</strong>・<strong>タグ</strong> の4軸で絞り込んで集計できます。<br>
+      ホーム画面の各大会カードの「分析」ボタンを押すと、その大会グループが自動選択された状態で分析画面に移動します。<br>
+      大会グループを「RAGE Japan Championship 2026 Season 1」にするとDay1〜GFをまとめて集計、フェーズで絞り込むと個別集計ができます。
+    </p>
+  </div>
+
+  <div class="card sec">
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px">⑦ シェア・保存する</div>
     <p style="font-size:13px;color:var(--text2);line-height:1.7">
       記録画面の「𝕏 ツイート」ボタンで戦績をXに投稿できます。<br>
       「📷 画像保存」ボタンで記録をPNG画像としてダウンロードできます。
@@ -164,7 +176,7 @@
   </div>
 
   <div class="card sec">
-    <div style="font-size:13px;font-weight:600;margin-bottom:10px">⑦ データのバックアップ</div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px">⑧ データのバックアップ</div>
     <p style="font-size:13px;color:var(--text2);line-height:1.7">
       データはブラウザのローカルストレージに保存されます。<br>
       ブラウザデータ消去や端末変更でデータが消えることがあるため、<strong>定期的にホーム画面の「エクスポート」でJSONファイルに書き出すことをおすすめします。</strong><br>
