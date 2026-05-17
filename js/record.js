@@ -230,10 +230,14 @@ function addBO3(tid){
   const oppWonClass = new Set(games.filter(g=>g.result==='lose').map(g=>g.oppPick));
   const setResult = myWonDecks.size>=2?'win':oppWonClass.size>=2?'lose':'unknown';
 
-  // スコア計算
+  // 1-1で第3戦未入力の場合はブロック
   const myWins  = games.filter(g=>g.result==='win').length;
   const oppWins = games.filter(g=>g.result==='lose').length;
-  const score   = `${myWins}-${oppWins}`;
+  if(myWins===1 && oppWins===1) return alert('1-1のため第3戦を入力してください。2デッキ両方での勝利で対戦勝利となります。');
+  if(setResult==='unknown') return alert('セット勝敗が確定していません。2デッキ両方での勝利で対戦勝利となります。');
+
+  // スコア計算
+  const score = `${myWins}-${oppWins}`;
 
   const r = {
     id: S.nextRId++,
@@ -406,7 +410,10 @@ function renderBO3Table(el, t){
         <span class="badge b-opp" style="display:inline-flex;align-items:center;gap:3px">${clsIcon(r.oppClass2,12)}${r.oppClass2}</span>
       </td>
       ${gameCell(games[0])}${gameCell(games[1])}${gameCell(games[2]||null)}
-      <td><span class="badge b-${setRes==='win'?'win':setRes==='lose'?'lose':'opp'}">${r.score||'?'} ${setRes==='win'?'勝':setRes==='lose'?'負':''}</span></td>
+      <td style="text-align:center">
+        <div style="font-size:12px;font-weight:500;color:var(--text)">${r.score||'?'}</div>
+        <div><span class="badge b-${setRes==='win'?'win':setRes==='lose'?'lose':'opp'}" style="font-size:12px">${setRes==='win'?'○':setRes==='lose'?'×':'?'}</span></div>
+      </td>
       <td class="memo-cell">${r.memo||''}</td>
       <td><button class="icon-btn danger" onclick="delRecord(${t.id},${r.id})">✕</button></td>
     </tr>`;
