@@ -157,11 +157,14 @@ function bo3RenderGames(t){
   }
 
   // 3戦目：1-1の場合のみ表示・両デッキ自動確定
-  const myWins1 = g0.result==='win'?1:0;
-  const myWins2 = myWins1 + (g1.result==='win'?1:0);
-  const oppWins1 = g0.result==='lose'?1:0;
-  const oppWins2 = oppWins1 + (g1.result==='lose'?1:0);
-  const showGame3 = g0.result && g1.result && myWins2===1 && oppWins2===1;
+  // g0・g1ともにデッキ・選出・結果すべて揃っている場合のみ有効
+  const g0valid = !!(g0.result && g0.myDeckId && g0.oppPick);
+  const g1valid = !!(g1.result && g1.myDeckId && g1.oppPick);
+  const myWins1 = g0valid && g0.result==='win'?1:0;
+  const myWins2 = myWins1 + (g1valid && g1.result==='win'?1:0);
+  const oppWins1 = g0valid && g0.result==='lose'?1:0;
+  const oppWins2 = oppWins1 + (g1valid && g1.result==='lose'?1:0);
+  const showGame3 = g0valid && g1valid && myWins2===1 && oppWins2===1;
 
   if(showGame3){
     const myWonId = g0.result==='win'?g0.myDeckId:g1.myDeckId;
