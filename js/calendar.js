@@ -187,6 +187,19 @@ function openEditTournament(id){
   }));
 }
 
+function updateOrCreateDeck(existingId, cls, name){
+  const finalName = name || cls;
+  const existing = getDeck(existingId);
+  if(existing){
+    // 既存デッキを上書き
+    existing.className = cls;
+    existing.name = finalName;
+    return existingId;
+  }
+  // 存在しない場合のみ新規作成
+  return getOrCreateDeck(cls, name);
+}
+
 function saveEditTournament(id){
   const t=getTournament(id); if(!t) return;
   const group=document.getElementById('m-tgroup').value.trim()||t.group||t.name;
@@ -197,8 +210,8 @@ function saveEditTournament(id){
   t.phase=phase;
   t.format=document.getElementById('m-tformat').value;
   t.tags=getSelectedTags();
-  t.deckId1=getOrCreateDeck(document.getElementById('m-dcls1').value,document.getElementById('m-dname1').value.trim());
-  t.deckId2=getOrCreateDeck(document.getElementById('m-dcls2').value,document.getElementById('m-dname2').value.trim());
+  t.deckId1=updateOrCreateDeck(t.deckId1, document.getElementById('m-dcls1').value, document.getElementById('m-dname1').value.trim());
+  t.deckId2=updateOrCreateDeck(t.deckId2, document.getElementById('m-dcls2').value, document.getElementById('m-dname2').value.trim());
   save(); closeModal(); renderHome();
   if(currentTId===id) renderRecord();
 }

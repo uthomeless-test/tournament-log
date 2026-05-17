@@ -256,14 +256,34 @@ function addBO3(tid){
 
 
 // ── 統計 ──────────────────────────────────────
+// BO3・BO1共通のBO1単位レコード配列を取得するユーティリティ
+function getBO1Units(records){
+  const units = [];
+  (records||[]).forEach(r=>{
+    if(r.format==='bo3'){
+      // BO3はgamesを展開してBO1単位として扱う
+      (r.games||[]).forEach(g=>{
+        if(g.result) units.push({ myDeckId: Number(g.myDeckId)||null, turn: g.turn, result: g.result, _bo3: true });
+      });
+    } else {
+      units.push(r);
+    }
+  });
+  return units;
+}
+
 function renderRecordStats(el, t){
   const recs = t.records||[];
   if(!recs.length){ el.innerHTML=''; return; }
-  // BO3はsetResult、BO1はresultで勝敗判定
-  const wins  = recs.filter(r=>r.format==='bo3'?r.setResult==='win':r.result==='win').length;
-  const total = recs.length;
+
+  // セット単位の勝敗（BO3はsetResult、BO1はresult）
+  const setWins  = recs.filter(r=>r.format==='bo3'?r.setResult==='win':r.result==='win').length;
+  const total    = recs.length;
+
+  // BO1単位でデッキ別集計
+  const units = getBO1Units(recs);
   const byDeck = {};
-  recs.forEach(r=>{
+  units.forEach(r=>{
     if(!r.myDeckId) return;
     if(!byDeck[r.myDeckId]) byDeck[r.myDeckId]={w:0,l:0};
     r.result==='win' ? byDeck[r.myDeckId].w++ : byDeck[r.myDeckId].l++;
@@ -274,7 +294,7 @@ function renderRecordStats(el, t){
   }).join('');
   const cols = Math.min(1+Object.keys(byDeck).length, 4);
   el.innerHTML=`<div class="stat-grid" style="grid-template-columns:repeat(${cols},1fr);margin-bottom:1rem">
-    <div class="stat-card"><div class="stat-label">戦績</div><div class="stat-val" style="font-size:16px">${wl(wins,total-wins)}</div><div class="stat-sub">${total}試合 / ${pct(wins,total)}</div></div>
+    <div class="stat-card"><div class="stat-label">セット戦績</div><div class="stat-val" style="font-size:16px">${wl(setWins,total-setWins)}</div><div class="stat-sub">${total}セット / ${pct(setWins,total)}</div></div>
     ${deckCards}
   </div>`;
 }

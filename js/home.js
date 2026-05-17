@@ -121,7 +121,7 @@ function buildMonthGroupsFromRows(rows){
 // ── 登録済み大会カード ──
 function buildRegisteredCard(t){
   const recs = t.records||[];
-  const wins = recs.filter(r=>r.result==='win').length;
+  const wins = recs.filter(r=>r.format==='bo3'?r.setResult==='win':r.result==='win').length;
   const d1=getDeck(t.deckId1); const d2=getDeck(t.deckId2);
   const deckStr=[d1,d2].filter(Boolean)
     .map(d=>`<span class="badge b-deck" style="display:inline-flex;align-items:center;gap:3px">${clsIcon(d.className,11)}${d.name}</span>`)
