@@ -228,10 +228,13 @@ function addBO3(tid){
   const games = bo3State.games.filter(g=>g.result);
   if(games.length<2) return alert('少なくとも2戦分の結果を入力してください');
 
-  // セット勝敗判定：自分が2種のデッキで各1勝
-  const myWonDecks  = new Set(games.filter(g=>g.result==='win').map(g=>g.myDeckId));
+  // セット勝敗判定：deckId1とdeckId2の両方で1勝ずつ取った場合に勝利
+  const dId1 = String(t.deckId1); const dId2 = String(t.deckId2);
+  const myWonDecks  = new Set(games.filter(g=>g.result==='win').map(g=>String(g.myDeckId)));
   const oppWonClass = new Set(games.filter(g=>g.result==='lose').map(g=>g.oppPick));
-  const setResult = myWonDecks.size>=2?'win':oppWonClass.size>=2?'lose':'unknown';
+  const mySetWin = myWonDecks.has(dId1) && myWonDecks.has(dId2);
+  const oppSetWin = oppWonClass.size >= 2;
+  const setResult = mySetWin ? 'win' : oppSetWin ? 'lose' : 'unknown';
 
   // 1-1で第3戦未入力の場合はブロック
   const myWins  = games.filter(g=>g.result==='win').length;
@@ -531,10 +534,12 @@ function saveEditBO3Record(tid, rid){
   }
   r.games = newGames;
 
-  // セット勝敗・スコア再計算
-  const myWonDecks  = new Set(newGames.filter(g=>g.result==='win').map(g=>g.myDeckId));
+  // セット勝敗・スコア再計算：deckId1とdeckId2の両方で1勝ずつ取った場合に勝利
+  const eDId1 = String(t.deckId1); const eDId2 = String(t.deckId2);
+  const myWonDecks  = new Set(newGames.filter(g=>g.result==='win').map(g=>String(g.myDeckId)));
   const oppWonClass = new Set(newGames.filter(g=>g.result==='lose').map(g=>g.oppPick));
-  r.setResult = myWonDecks.size>=2?'win':oppWonClass.size>=2?'lose':'unknown';
+  const eMySetWin = myWonDecks.has(eDId1) && myWonDecks.has(eDId2);
+  r.setResult = eMySetWin ? 'win' : oppWonClass.size>=2 ? 'lose' : 'unknown';
   const myW = newGames.filter(g=>g.result==='win').length;
   const opW = newGames.filter(g=>g.result==='lose').length;
   r.score = `${myW}-${opW}`;

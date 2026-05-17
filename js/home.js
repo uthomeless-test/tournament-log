@@ -172,6 +172,15 @@ function goAnalysis(id){ currentAnalysisTId=id; showPage('analysis'); }
 function deleteTournament(id){
   if(!confirm('この大会の記録を削除しますか？')) return;
   S.tournaments=S.tournaments.filter(t=>t.id!==id);
+
+  // 他の大会で使われていないデッキを削除
+  const usedDeckIds = new Set(S.tournaments.flatMap(t=>[t.deckId1,t.deckId2].filter(Boolean)));
+  S.decks = S.decks.filter(d=>usedDeckIds.has(d.id));
+
+  // 他の大会で使われていないカスタムタグを削除
+  const usedTags = new Set(S.tournaments.flatMap(t=>t.tags||[]));
+  S.tags = S.tags.filter(tag=>usedTags.has(tag));
+
   save();
   if(currentTId===id){ currentTId=getLatestTId(); showPage('home'); return; }
   renderHome();
